@@ -5,7 +5,7 @@ import 'package:app/pages/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
 
-  // sign user out method
+  // Metodo per effettuare il logout dell'utente
   void signUserOut() {
     FirebaseAuth.instance.signOut();
   }
@@ -26,11 +26,6 @@ class _HomePageState extends State<HomePage> {
         _selectedIndex = index;
     });
   }
-
-  final List<Widget> _pages = [
-    const CenterPage(),
-    const ProfilePage(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +42,19 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Colors.grey[100],
       bottomNavigationBar: BottomNavBar(
-        onTabChange: (index) => navigateBottomBar(index), 
+        onTabChange: navigateBottomBar, 
       ),
-      body: _pages[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          const CenterPage(),
+          ProfilePage(
+            onTap: () {
+              // Logica per il tap all'interno di ProfilePage
+            },
+          ),
+        ],
+      ),
     );
   }
 }

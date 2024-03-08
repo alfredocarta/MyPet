@@ -6,7 +6,8 @@ class CenterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Home Page')),
+      backgroundColor: Colors.grey[300],
+      body: const Center(child: Text('Home Page')),
     );
   }
 }
