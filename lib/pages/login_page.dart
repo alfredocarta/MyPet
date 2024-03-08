@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
           
                 const SizedBox(height: 50),
-                
+                /*
                 // google + apple sign in button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -191,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-          
+          */
                 const SizedBox(height: 50),
                 
                 // Non sei registrato? Registrati ora

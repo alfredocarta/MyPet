@@ -11,11 +11,9 @@ class SchedaBiografica extends StatefulWidget {
 }
 
 class _SchedaBiograficaState extends State<SchedaBiografica> {
-  int _selectedIndex = 1; 
 
   void navigateBottomBar(int index) {
     setState(() {
-        _selectedIndex = index;
     });
   }
 
@@ -26,6 +24,7 @@ class _SchedaBiograficaState extends State<SchedaBiografica> {
         backgroundColor: Colors.grey[700],
         title: const Text("Romeo"),
       ),
+      body: Center(child: Text("Scheda")),
       backgroundColor: Colors.grey[100],
       bottomNavigationBar: BottomNavBar(
         onTabChange: navigateBottomBar, 
