@@ -1,21 +1,20 @@
-import 'package:app/components/profile_button.dart';
-import 'package:app/pages/profile/scheda_biografica.dart';
 import 'package:flutter/material.dart';
+import 'package:app/pages/profile/profile_screen.dart'; // Importa la pagina CenterPage
+import 'package:app/pages/profile/scheda_biografica.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key, required this.onTap});
-  final Function()? onTap;
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 30), // Aggiunto padding superiore
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start, // Posiziona i widget all'inizio della colonna
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Padding(
                   padding: EdgeInsets.only(left: 30.0),
@@ -33,24 +32,17 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 15),
-                ProfileButton(
-                  onTap: () {
+
+                SchedaBiografica(
+                  onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => SchedaBiografica(),
-                      ),
+                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
                     );
                   },
-                  icon: Icons.book,
-                  text: "Scheda biografica",
                 ),
-                const SizedBox(height: 10),
-                ProfileButton(
-                  onTap: onTap,
-                  icon: Icons.file_open,
-                  text: "Libretto vaccinale",
-                ),
+
+
               ],
             ),
           ),
@@ -59,4 +51,3 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-

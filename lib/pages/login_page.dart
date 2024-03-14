@@ -1,7 +1,5 @@
 import 'package:app/components/my_button.dart';
 import 'package:app/components/my_textfield.dart';
-import 'package:app/components/square_tile.dart';
-import 'package:app/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

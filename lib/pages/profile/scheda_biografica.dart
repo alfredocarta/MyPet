@@ -1,35 +1,30 @@
-import 'package:app/components/bottom_nav_bar.dart';
-import 'package:app/pages/center_page.dart';
-import 'package:app/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 
-class SchedaBiografica extends StatefulWidget {
-  const SchedaBiografica({super.key});
+class SchedaBiografica extends StatelessWidget {
+  const SchedaBiografica({
+    super.key,
+    required this.onPressed,
+  });
 
-  @override
-  State<SchedaBiografica> createState() => _SchedaBiograficaState();
-}
-
-class _SchedaBiograficaState extends State<SchedaBiografica> {
-
-  void navigateBottomBar(int index) {
-    setState(() {
-    });
-  }
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey[700],
-        title: const Text("Romeo"),
+    return ListTile(
+      title: const Padding(
+        padding: EdgeInsets.only(left: 16.0),
+        child: Text(
+          'Scheda biografica',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
       ),
-      body: Center(child: Text("Scheda")),
-      backgroundColor: Colors.grey[100],
-      bottomNavigationBar: BottomNavBar(
-        onTabChange: navigateBottomBar, 
+      trailing: IconButton(
+        onPressed: onPressed,
+        icon: const Icon(Icons.edit),
       ),
-      
     );
   }
 }
