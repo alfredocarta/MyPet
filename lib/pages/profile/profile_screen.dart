@@ -1,4 +1,4 @@
-import 'package:app/components/back_app_bar%20copy.dart';
+import 'package:app/components/back_app_bar.dart';
 import 'package:app/components/text_box.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
