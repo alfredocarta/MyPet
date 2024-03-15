@@ -4,6 +4,7 @@ import 'package:app/components/square_tile.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -21,30 +22,40 @@ class _RegisterPageState extends State<RegisterPage> {
   final confirmPasswordController = TextEditingController();
 
   // sign user up method
-  void signUserUp() async {
+  void signUp() async {
 
     // show loading circle
     showDialog(
       context: context, 
-      builder: (context) {
-        return const Center (
-          child: CircularProgressIndicator(),
-        );
-      },
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      )
     );
 
-    // try sign up
+    if ( passwordController.text != confirmPasswordController.text ) {
+      Navigator.pop(context);
+      showErrorMessage('Le password non corrispondono');
+      return;
+    }
+
+    // try creating the user
     try {
-      // controlla se le password sono identiche
-      if ( passwordController.text == confirmPasswordController.text ) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text, 
         password: passwordController.text,
-        );
-      } else {
-        // errore
-        showErrorMessage('Le password non corrispondono');
-      }
+      );
+
+      // dopo aver creato l'utente, crea un documento in cloud firestore chiamato Users
+      FirebaseFirestore.instance.
+        collection("Users").
+        doc(userCredential.user!.email) 
+        .set({
+          'username' : emailController.text.split('@')[0], // username iniziale
+          'Nome' : 'Nome vuoto'
+
+        });
+
       // pop the loading circle
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
@@ -135,7 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 // sign in
                 MyButton(
                   text: "Iscriviti",
-                  onTap: signUserUp,
+                  onTap: signUp,
                 ),
           
                 const SizedBox(height: 50),

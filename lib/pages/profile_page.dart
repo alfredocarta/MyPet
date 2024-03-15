@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app/pages/profile/profile_screen.dart'; // Importa la pagina CenterPage
-import 'package:app/pages/profile/scheda_biografica.dart';
+import 'package:app/pages/profile/go_to_scheda_biografica.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
