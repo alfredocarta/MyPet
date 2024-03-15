@@ -20,7 +20,7 @@ class NavigationMenu extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[700],
+        backgroundColor: Colors.grey[900],
         title: const Text("Romeo"),
         actions: [
           IconButton(
