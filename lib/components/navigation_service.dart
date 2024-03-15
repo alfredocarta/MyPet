@@ -22,7 +22,7 @@ class NavigationService {
   static void navigateToCenterPage(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => ProfileScreen()),
+      MaterialPageRoute(builder: (context) => const ProfileScreen()),
     );
   }
 

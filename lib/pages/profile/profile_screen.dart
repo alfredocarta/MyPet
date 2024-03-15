@@ -1,19 +1,28 @@
 import 'package:app/components/back_app_bar.dart';
 import 'package:app/components/text_box.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
-  final userCollection = Firebase.instance.collection("Users");
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+
+  final currentUser = FirebaseAuth.instance.currentUser!;
+
+  final userCollection = FirebaseFirestore.instance.collection("Users"); 
 
   Future<void> editField(BuildContext context, String field) async {
     String newValue = "";
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[700],
+        backgroundColor: Colors.grey[900],
         title: Text(
           "Modifica $field",
           style: const TextStyle(
@@ -48,56 +57,72 @@ class ProfileScreen extends StatelessWidget {
     );
 
     // aggiorna su firestore
-    if (newValue.trim().length > 0) {
+    if (newValue.trim().isNotEmpty) {
       await userCollection.doc(currentUser.email).update({field: newValue});
     }
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(
         title: Text('Scheda biografica'),
       ),
       backgroundColor: Colors.grey[100],
-      body: ListView(
-        children: [
-          const SizedBox(height: 50),
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final userData = snapshot.data!.data() as Map<String, dynamic>;
 
-          const Icon(
-            Icons.person,
-            size: 72,
-          ),
+            return ListView(
+              children: [
+                const SizedBox(height: 50),
 
-          Padding(
-            padding: const EdgeInsets.only(left: 25.0),
-            child: Text(
-              'Scheda biografica',
-              style: TextStyle(color: Colors.grey[600]),
-            ),
-          ),
+                const Icon(
+                  Icons.person,
+                  size: 72,
+                ),
 
-          // username
-          MyTextBox(
-            text: 'User',
-            sectionName: 'Username',
-            onPressed: () => editField(context, 'Username'),
-          ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: Text(
+                    'Scheda biografica',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                ),
 
-          // Nome
-          MyTextBox(
-            text: 'Nome vuoto',
-            sectionName: 'Nome',
-            onPressed: () => editField(context, 'Nome'),
-          ),
+                // username
+                MyTextBox(
+                  text: userData['username'],
+                  sectionName: 'Username',
+                  onPressed: () => editField(context, 'Username'),
+                ),
 
-          // Data di nascita
-          MyTextBox(
-            text: 'dd/mm/yyyy',
-            sectionName: 'Data di Nascita',
-            onPressed: () => editField(context, 'Data'),
-          ),
-        ],
+                // Nome
+                MyTextBox(
+                  text: userData['nome'],
+                  sectionName: 'Nome',
+                  onPressed: () => editField(context, 'Nome'),
+                ),
+
+                // Data di nascita
+                MyTextBox(
+                  text: 'dd/mm/yyyy',
+                  sectionName: 'Data di Nascita',
+                  onPressed: () => editField(context, 'Data'),
+                ),
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Errore ${snapshot.error}'),
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }

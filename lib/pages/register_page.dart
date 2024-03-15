@@ -53,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
         .set({
           'username' : emailController.text.split('@')[0], // username iniziale
           'Nome' : 'Nome vuoto'
-
+          // aggiungi altri campi se servono
         });
 
       // pop the loading circle
