@@ -3,7 +3,7 @@ import 'package:app/pages/profile/profile_screen.dart'; // Importa la pagina Cen
 import 'package:app/pages/profile/go_to_scheda_biografica.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key, });
 
   @override
   Widget build(BuildContext context) {

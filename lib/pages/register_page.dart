@@ -22,7 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final confirmPasswordController = TextEditingController();
 
   // sign user up method
-  void signUp() async {
+  Future signUp() async {
 
     // show loading circle
     showDialog(
@@ -57,10 +57,10 @@ class _RegisterPageState extends State<RegisterPage> {
         });
 
       // pop the loading circle
-      //Navigator.pop(context);
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       // pop the loading circle
-      //Navigator.pop(context);
+      Navigator.pop(context);
       
       // show error message
       showErrorMessage(e.code);
