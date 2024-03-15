@@ -1,50 +1,42 @@
 import 'package:app/components/my_button.dart';
 import 'package:app/components/my_textfield.dart';
+import 'package:app/pages/forgot_password_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  final VoidCallback showRegisterPage;
+  
+  const LoginPage({
+    Key? key,
+    required this.showRegisterPage, 
+    this.onTap,
+  }) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // text editing controllers 
-  final emailController = TextEditingController();
 
-  final passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   // sign user in method
-  void signUserIn() async {
-
-    // show loading circle
-    showDialog(
-      context: context, 
-      builder: (context) {
-        return const Center (
-          child: CircularProgressIndicator(),
-        );
-      },
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailController.text.trim(), 
+      password: _passwordController.text.trim(),
     );
+  }
 
-    // try sign in
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text, 
-      password: passwordController.text,
-      );
-      // pop the loading circle
-      //Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      // pop the loading circle
-     // Navigator.pop(context);
-      
-      // show error message
-      showErrorMessage(e.code);
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
   }
 
   // messaggio di errore
@@ -98,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
           
                 // username
                 MyTextField(
-                  controller: emailController,
+                  controller: _emailController,
                   hintText: 'Username',
                   obscureText: false,
                 ),
@@ -107,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
           
                 // password
                 MyTextField(
-                  controller: passwordController,
+                  controller: _passwordController,
                   hintText: 'Password',
                   obscureText: true,
                 ),
@@ -120,9 +112,20 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        'Hai dimenticato la password?',
-                        style: TextStyle(color: Colors.grey[600]),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context, MaterialPageRoute(
+                              builder: (context){
+                                return ForgotPasswordPage();
+                              },
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Hai dimenticato la password?',
+                          style: TextStyle(color: Colors.grey[600]),
+                        ),
                       ),
                     ],
                   ),
@@ -133,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                 // sign in
                 MyButton(
                   text: "Accedi",
-                  onTap: signUserIn,
+                  onTap: signIn,
                 ),
           
                 const SizedBox(height: 50),
@@ -202,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
-                      onTap: widget.onTap,
+                      onTap: widget.showRegisterPage,
                       child: const Text(
                         'Registrati ora',
                         style: TextStyle(

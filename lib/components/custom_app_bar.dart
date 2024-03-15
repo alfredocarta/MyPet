@@ -8,12 +8,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.grey[700],
+      backgroundColor: Colors.grey[900],
       title: const Text("Romeo"),
       actions: [
         IconButton(
           onPressed: onSignOut,
-          icon: const Icon(Icons.logout),
+          icon: const Icon(
+            Icons.logout,
+            color: Colors.white,
+          ),
         ),
       ],
     );

@@ -1,15 +1,19 @@
 import 'package:app/components/my_button.dart';
 import 'package:app/components/my_textfield.dart';
-import 'package:app/components/square_tile.dart';
-import 'package:app/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
+  final VoidCallback showLoginPage;
 
-  const RegisterPage({super.key, required this.onTap});
+  const RegisterPage({
+    Key? key,
+    required this.showLoginPage, 
+    this.onTap,
+  }) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -17,72 +21,38 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   // text editing controllers 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+  }
 
   // sign user up method
   Future signUp() async {
-
-    // show loading circle
-    showDialog(
-      context: context, 
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      )
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: _emailController.text.trim(), 
+      password: _passwordController.text.trim(),
     );
-
-    if ( passwordController.text != confirmPasswordController.text ) {
-      Navigator.pop(context);
-      showErrorMessage('Le password non corrispondono');
-      return;
-    }
-
-    // try creating the user
-    try {
-
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text, 
-        password: passwordController.text,
-      );
-
-      // dopo aver creato l'utente, crea un documento in cloud firestore chiamato Users
-      FirebaseFirestore.instance.
-        collection("Users").
-        doc(userCredential.user!.email) 
-        .set({
-          'username' : emailController.text.split('@')[0], // username iniziale
-          'Nome' : 'Nome vuoto'
-          // aggiungi altri campi se servono
-        });
-
-      // pop the loading circle
-      Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      // pop the loading circle
-      Navigator.pop(context);
-      
-      // show error message
-      showErrorMessage(e.code);
-    }
   }
 
-  // messaggio di errore
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context, 
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.deepPurple,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ), 
-        );
-      },
-    );
+  Future addUserDetails(String email) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'email': email,
+    });
+  }
+
+  bool passwordConfirmed() {
+    if ( _passwordController.text.trim() == _confirmPasswordController.text.trim() ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -118,7 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
           
                 // username
                 MyTextField(
-                  controller: emailController,
+                  controller: _emailController,
                   hintText: 'Username',
                   obscureText: false,
                 ),
@@ -127,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
           
                 // password
                 MyTextField(
-                  controller: passwordController,
+                  controller: _passwordController,
                   hintText: 'Password',
                   obscureText: true,
                 ),
@@ -136,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 // confirm password
                 MyTextField(
-                  controller: confirmPasswordController,
+                  controller: _confirmPasswordController,
                   hintText: 'Conferma la password',
                   obscureText: true,
                 ),
@@ -182,28 +152,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
           
                 const SizedBox(height: 50),
-                
-                // google + apple sign in button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // google
-                    SquareTile(
-                      onTap: () => AuthService().signInWithGoogle(),
-                      imagePath: '/Users/alfredocarta/Desktop/learn-flutter/flutter_application_1/lib/images/google.png',
-                    ),
-          
-                    const SizedBox(width: 25),
-          
-                    //apple
-                    SquareTile(
-                      onTap: () {},
-                      imagePath: '/Users/alfredocarta/Desktop/learn-flutter/flutter_application_1/lib/images/apple.png'
-                    ),
-                  ],
-                ),
-          
-               const SizedBox(height: 50),
+
+                const SizedBox(height: 50),
                 
                 // Non sei registrato? Registrati ora
                 Row(
@@ -215,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
-                      onTap: widget.onTap,
+                      onTap: widget.showLoginPage,
                       child: const Text(
                         'Accedi',
                         style: TextStyle(
