@@ -24,6 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _firstNameController = TextEditingController();
 
   @override
   void dispose() {
@@ -31,18 +32,28 @@ class _RegisterPageState extends State<RegisterPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _firstNameController.dispose();
   }
 
   // sign user up method
   Future signUp() async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: _emailController.text.trim(), 
-      password: _passwordController.text.trim(),
-    );
+    if ( passwordConfirmed() ) {
+      //crea l'utente
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(), 
+        password: _passwordController.text.trim(),
+      );
+      // aggiungi i dettagli dell'utente
+      addUserDetails(
+        _firstNameController.text.trim(),
+        _emailController.text.trim(),
+      );
+    }
   }
 
-  Future addUserDetails(String email) async {
+  Future addUserDetails(String nome, String email) async {
     await FirebaseFirestore.instance.collection('users').add({
+      'nome': nome,
       'email': email,
     });
   }
@@ -83,13 +94,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontSize: 16,
                   ),
                 ),
-          
+
                 const SizedBox(height: 25),
+
+                // mail
+                MyTextField(
+                  controller: _firstNameController,
+                  hintText: 'Nome',
+                  obscureText: false,
+                ),
           
-                // username
+                const SizedBox(height: 10),
+                    
+                // mail
                 MyTextField(
                   controller: _emailController,
-                  hintText: 'Username',
+                  hintText: 'Email',
                   obscureText: false,
                 ),
           
