@@ -3,17 +3,16 @@ import 'package:app/components/my_textfield.dart';
 import 'package:app/pages/forgot_password_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
   final VoidCallback showRegisterPage;
   
   const LoginPage({
-    Key? key,
+    super.key,
     required this.showRegisterPage, 
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -117,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context, MaterialPageRoute(
                               builder: (context){
-                                return ForgotPasswordPage();
+                                return const ForgotPasswordPage();
                               },
                             ),
                           );

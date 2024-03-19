@@ -10,10 +10,10 @@ class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
 
   const RegisterPage({
-    Key? key,
+    super.key,
     required this.showLoginPage, 
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();

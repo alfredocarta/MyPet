@@ -44,37 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDlkEO-uPdiKKIkEOHcRaH72LHKv29Yo6s',
-    appId: '1:311729400938:web:381f6e10df052a31402e13',
-    messagingSenderId: '311729400938',
-    projectId: 'auth-8eaaf',
-    authDomain: 'auth-8eaaf.firebaseapp.com',
-    storageBucket: 'auth-8eaaf.appspot.com',
+    apiKey: 'AIzaSyCHerCj8OxFLY-BKDzt8YuerAfsfDfbCEY',
+    appId: '1:729729207165:web:efba46c20dbac738cf1a14',
+    messagingSenderId: '729729207165',
+    projectId: 'mypet-8dae1',
+    authDomain: 'mypet-8dae1.firebaseapp.com',
+    storageBucket: 'mypet-8dae1.appspot.com',
+    measurementId: 'G-0NB723LQBQ',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBiUzaISGd0ed-KIxcSo9KR5eI3UxrO7To',
-    appId: '1:311729400938:android:470c53cfcf3d0226402e13',
-    messagingSenderId: '311729400938',
-    projectId: 'auth-8eaaf',
-    storageBucket: 'auth-8eaaf.appspot.com',
+    apiKey: 'AIzaSyAk9IBqHlZfJn3Fhj5vCNvaJ0mI1VM1gEM',
+    appId: '1:729729207165:android:cc4f1dccfbb1f3a6cf1a14',
+    messagingSenderId: '729729207165',
+    projectId: 'mypet-8dae1',
+    storageBucket: 'mypet-8dae1.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCCNmshVTnuI0w1X64UR6UQtWCdguzOIqU',
-    appId: '1:311729400938:ios:6e290b09765e35aa402e13',
-    messagingSenderId: '311729400938',
-    projectId: 'auth-8eaaf',
-    storageBucket: 'auth-8eaaf.appspot.com',
-    iosBundleId: 'com.example.flutterApplication1',
+    apiKey: 'AIzaSyAT19MtqBZuyFLcA3eI9nl33eQgtZzdA4k',
+    appId: '1:729729207165:ios:5d72f36e4c1f9bdccf1a14',
+    messagingSenderId: '729729207165',
+    projectId: 'mypet-8dae1',
+    storageBucket: 'mypet-8dae1.appspot.com',
+    iosBundleId: 'com.vetter.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCCNmshVTnuI0w1X64UR6UQtWCdguzOIqU',
-    appId: '1:311729400938:ios:b2eb3a562b032aef402e13',
-    messagingSenderId: '311729400938',
-    projectId: 'auth-8eaaf',
-    storageBucket: 'auth-8eaaf.appspot.com',
-    iosBundleId: 'com.example.flutterApplication1.RunnerTests',
+    apiKey: 'AIzaSyAT19MtqBZuyFLcA3eI9nl33eQgtZzdA4k',
+    appId: '1:729729207165:ios:d4a3d53f5874f167cf1a14',
+    messagingSenderId: '729729207165',
+    projectId: 'mypet-8dae1',
+    storageBucket: 'mypet-8dae1.appspot.com',
+    iosBundleId: 'com.example.app.RunnerTests',
   );
 }
