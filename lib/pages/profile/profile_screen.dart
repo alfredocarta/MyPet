@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
-
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -15,7 +14,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  final userCollection = FirebaseFirestore.instance.collection("Users"); 
+  final userCollection = FirebaseFirestore.instance.collection("users"); 
 
   Future<void> editField(BuildContext context, String field) async {
     String newValue = "";
@@ -62,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(
@@ -70,19 +69,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       backgroundColor: Colors.grey[100],
       body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
+        stream: FirebaseFirestore.instance.collection("users").doc(currentUser.email).snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final userData = snapshot.data!.data() as Map<String, dynamic>;
+          if (snapshot.hasData && snapshot.data != null) { // Check if snapshot has data and it's not null
+            final userData = snapshot.data!.data() as Map<String, dynamic>?;
 
             return ListView(
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
 
                 const Icon(
                   Icons.person,
                   size: 72,
                 ),
+
+                Text(
+                  currentUser.email!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey[700]),
+                ),
+
+                const SizedBox(height: 20),
 
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
@@ -94,16 +101,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 // username
                 MyTextBox(
-                  text: userData['username'],
+                  text: userData?['email'] ?? '', // Use null-aware operator and null check
                   sectionName: 'Username',
-                  onPressed: () => editField(context, 'Username'),
+                  onPressed: () => editField(context, 'email'),
                 ),
 
                 // Nome
                 MyTextBox(
-                  text: userData['nome'],
+                  text: userData?['nome'] ?? '', // Use null-aware operator and null check
                   sectionName: 'Nome',
-                  onPressed: () => editField(context, 'Nome'),
+                  onPressed: () => editField(context, 'nome'),
                 ),
 
                 // Data di nascita
