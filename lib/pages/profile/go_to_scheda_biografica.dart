@@ -10,21 +10,26 @@ class SchedaBiografica extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: const Padding(
-        padding: EdgeInsets.only(left: 16.0),
-        child: Text(
-          'Scheda biografica',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+    return Column(
+      children: [
+        ListTile(
+          title: const Padding(
+            padding: EdgeInsets.only(left: 16.0),
+            child: Text(
+              'Scheda biografica',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          trailing: IconButton(
+            onPressed: onPressed,
+            icon: const Icon(Icons.edit),
           ),
         ),
-      ),
-      trailing: IconButton(
-        onPressed: onPressed,
-        icon: const Icon(Icons.edit),
-      ),
+      ],
     );
   }
 }

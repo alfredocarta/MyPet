@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onSignOut;
 
-  const CustomAppBar({super.key, required this.onSignOut});
+  const CustomAppBar({
+    super.key, 
+    required this.onSignOut,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.grey[900],
-      title: const Text("Romeo"),
+      title: const Text(
+        "Romeo",
+        style: TextStyle(color: Colors.white),
+      ),
       actions: [
         IconButton(
           onPressed: onSignOut,

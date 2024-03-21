@@ -14,9 +14,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  final userCollection = FirebaseFirestore.instance.collection("users"); 
+  final userCollection = FirebaseFirestore.instance.collection("Users"); 
 
-  Future<void> editField(BuildContext context, String field) async {
+  Future<void> editField(String field) async {
     String newValue = "";
     await showDialog(
       context: context,
@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     // aggiorna su firestore
-    if (newValue.trim().isNotEmpty) {
+    if (newValue.trim().length > 0) {
       await userCollection.doc(currentUser.email).update({field: newValue});
     }
   }
@@ -65,14 +65,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(
-        title: Text('Scheda biografica'),
+        title: Text(
+          'Profilo',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       backgroundColor: Colors.grey[100],
       body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection("users").doc(currentUser.email).snapshots(),
+        stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) { // Check if snapshot has data and it's not null
-            final userData = snapshot.data!.data() as Map<String, dynamic>?;
+          if (snapshot.hasData) { 
+            final userData = snapshot.data!.data() as Map<String, dynamic>;
 
             return ListView(
               children: [
@@ -101,23 +104,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 // username
                 MyTextBox(
-                  text: userData?['email'] ?? '', // Use null-aware operator and null check
+                  text: userData['username'], 
                   sectionName: 'Username',
-                  onPressed: () => editField(context, 'email'),
+                  onPressed: () => editField('username'),
                 ),
 
                 // Nome
                 MyTextBox(
-                  text: userData?['nome'] ?? '', // Use null-aware operator and null check
+                  text: userData['nome'], 
                   sectionName: 'Nome',
-                  onPressed: () => editField(context, 'nome'),
-                ),
-
-                // Data di nascita
-                MyTextBox(
-                  text: 'dd/mm/yyyy',
-                  sectionName: 'Data di Nascita',
-                  onPressed: () => editField(context, 'Data'),
+                  onPressed: () => editField('nome'),
                 ),
               ],
             );

@@ -4,13 +4,11 @@ class MyTextBox extends StatelessWidget {
   final String text;
   final String sectionName;
   final void Function()? onPressed;
-  final TextEditingController? controller;
   const MyTextBox({
     super.key,
     required this.text,
     required this.sectionName,
     required this.onPressed,
-    this.controller,
   });
 
   @override
@@ -46,18 +44,7 @@ class MyTextBox extends StatelessWidget {
               ),
             ],
           ),
-          //text
-          if (controller != null) // Controlla se il controller è stato fornito
-            TextFormField(
-              controller: controller, // Usa il controller fornito
-              readOnly: true, // Impedisce all'utente di modificare direttamente il testo
-              decoration: InputDecoration(
-                hintText: text,
-                border: InputBorder.none,
-              ),
-            ),
-          if (controller == null) // Se il controller non è stato fornito, mostra solo il testo
-            Text(text),
+          Text(text),
         ],
       ),
     );

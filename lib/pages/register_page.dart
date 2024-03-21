@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
   final VoidCallback showLoginPage;
 
   const RegisterPage({
     super.key,
-    required this.showLoginPage, 
+    required this.showLoginPage,
     this.onTap,
   });
 
@@ -20,49 +19,65 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  // text editing controllers 
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _firstNameController = TextEditingController();
+  // text editing controllers
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final firstNameController = TextEditingController();
 
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _firstNameController.dispose();
+  // messaggio di errore
+  void displayMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey[700],
+          title: Center(
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   // sign user up method
-  Future signUp() async {
-    if ( passwordConfirmed() ) {
-      //crea l'utente
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(), 
-        password: _passwordController.text.trim(),
-      );
-      // aggiungi i dettagli dell'utente
-      addUserDetails(
-        _firstNameController.text.trim(),
-        _emailController.text.trim(),
-      );
+  void signUp() async {
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    if (passwordController.text != confirmPasswordController.text) {
+      Navigator.pop(context);
+      displayMessage("Le password non corrispondono!");
+      return;
     }
-  }
 
-  Future addUserDetails(String nome, String email) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'nome': nome,
-      'email': email,
-    });
-  }
+    try {
 
-  bool passwordConfirmed() {
-    if ( _passwordController.text.trim() == _confirmPasswordController.text.trim() ) {
-      return true;
-    } else {
-      return false;
+      UserCredential userCredential = 
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      FirebaseFirestore.instance
+        .collection("Users")
+        .doc(userCredential.user!.email)
+        .set({
+          'username' :  emailController.text.split('@')[0],
+          'nome': firstNameController.text,
+        });
+
+      if (context.mounted) Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      displayMessage(e.code);
     }
   }
 
@@ -77,15 +92,15 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 25),
-          
+
                 // logo
                 const Icon(
                   Icons.lock,
                   size: 50,
                 ),
-                
+
                 const SizedBox(height: 50),
-                
+
                 // Messaggio di benvenuto
                 Text(
                   'Crea un account',
@@ -99,48 +114,48 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 // mail
                 MyTextField(
-                  controller: _firstNameController,
+                  controller: firstNameController,
                   hintText: 'Nome',
                   obscureText: false,
                 ),
-          
+
                 const SizedBox(height: 10),
-                    
+
                 // mail
                 MyTextField(
-                  controller: _emailController,
+                  controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
                 ),
-          
+
                 const SizedBox(height: 10),
-          
+
                 // password
                 MyTextField(
-                  controller: _passwordController,
+                  controller: passwordController,
                   hintText: 'Password',
                   obscureText: true,
                 ),
-          
+
                 const SizedBox(height: 10),
 
                 // confirm password
                 MyTextField(
-                  controller: _confirmPasswordController,
+                  controller: confirmPasswordController,
                   hintText: 'Conferma la password',
                   obscureText: true,
                 ),
-          
+
                 const SizedBox(height: 25),
-          
+
                 // sign in
                 MyButton(
                   text: "Iscriviti",
                   onTap: signUp,
                 ),
-          
+
                 const SizedBox(height: 50),
-          
+
                 // o continua con
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -152,7 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           color: Colors.grey[400],
                         ),
                       ),
-                
+
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
@@ -160,7 +175,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                       ),
-                
+
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
@@ -170,11 +185,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                 ),
-          
+
                 const SizedBox(height: 50),
 
                 const SizedBox(height: 50),
-                
+
                 // Non sei registrato? Registrati ora
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -189,14 +204,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: const Text(
                         'Accedi',
                         style: TextStyle(
-                          color: Colors.blue, 
+                          color: Colors.blue,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ],
                 ),
-          
               ],
             ),
           ),

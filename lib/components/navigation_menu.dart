@@ -21,11 +21,15 @@ class NavigationMenu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[900],
-        title: const Text("Romeo"),
+        title: const Text(
+          "MyPet",
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [
           IconButton(
             onPressed: signUserOut,
             icon: const Icon(Icons.logout),
+            color: Colors.white,
           ),
         ],
       ),

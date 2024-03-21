@@ -24,27 +24,39 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   // sign user in method
-  Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text.trim(), 
-      password: _passwordController.text.trim(),
-    );
-  }
+  void signIn() async {
 
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
+    // caricamento
+    showDialog(
+      context: context, 
+      builder: (context) => const Center(
+        child: CircularProgressIndicator()
+      ),
+    );
+  
+
+    // prova a accedere
+    try { 
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailController.text, 
+      password: _passwordController.text,
+    );
+
+    if (context.mounted) Navigator.pop(context);
+
+    } on FirebaseAuthException catch(e) {
+      Navigator.pop(context);
+      displayMessage(e.code);
+    }
   }
 
   // messaggio di errore
-  void showErrorMessage(String message) {
+  void displayMessage(String message) {
     showDialog(
       context: context, 
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Colors.grey[700],
           title: Center(
             child: Text(
               message,
