@@ -34,15 +34,19 @@ class NavigationMenu extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: Obx(
-        () => NavigationBar(
-          height: 80,
-          elevation: 0,
-          selectedIndex: controller.selectedIndex.value,
-          onDestinationSelected: (index) => controller.selectedIndex.value = index,
-          destinations: const [
-            NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-            NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
-          ],
+        () => SizedBox(
+          height: 100, // Puoi regolare questo valore secondo le tue esigenze
+          child: BottomNavigationBar(
+            backgroundColor: Colors.grey[900], 
+            selectedItemColor: Colors.white, 
+            unselectedItemColor: Colors.grey, 
+            currentIndex: controller.selectedIndex.value,
+            onTap: (index) => controller.selectedIndex.value = index,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profilo'),
+            ],
+          ),
         ),
       ),
       body: Obx(
