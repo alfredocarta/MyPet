@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SchedaBiografica extends StatelessWidget {
-  const SchedaBiografica({
+class GoToLibVacc extends StatelessWidget {
+  const GoToLibVacc({
     super.key,
     required this.onPressed,
   });
@@ -16,7 +16,7 @@ class SchedaBiografica extends StatelessWidget {
           title: const Padding(
             padding: EdgeInsets.only(left: 16.0),
             child: Text(
-              'Scheda biografica',
+              'Libretto vaccinale',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -29,6 +29,7 @@ class SchedaBiografica extends StatelessWidget {
             icon: const Icon(Icons.edit),
           ),
         ),
+        
       ],
     );
   }

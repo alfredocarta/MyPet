@@ -71,12 +71,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(height: 50),
           
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                   size: 100,
                 ),
                 
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 
                 // Messaggio di benvenuto
                 Text(
@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
           
                 const SizedBox(height: 50),
-          
+                /*  
                 // o continua con
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
           
                 const SizedBox(height: 50),
-                /*
+                
                 // google + apple sign in button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -35,7 +35,7 @@ class ProfileMenu extends StatelessWidget {
 
             // Valore
             Expanded(
-              flex: 2, // Imposta un rapporto di flessione di 2
+              flex: 2, 
               child: Center(
                 child: Row(
                   children: [

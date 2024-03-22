@@ -23,7 +23,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  final firstNameController = TextEditingController();
 
   // messaggio di errore
   void displayMessage(String message) {
@@ -71,7 +70,10 @@ class _RegisterPageState extends State<RegisterPage> {
         .doc(userCredential.user!.email)
         .set({
           'username' :  emailController.text.split('@')[0],
-          'nome': firstNameController.text,
+          'nome': "Come si chiama il tuo animale?",
+          'dataDiNascita': "Quando è nato?",
+          'mantello': "Che mantello ha?",
+          'razza': "Che razza è?",
         });
 
       if (context.mounted) Navigator.pop(context);
@@ -84,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -112,14 +114,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 25),
 
-                // mail
+                /* Nome
                 MyTextField(
                   controller: firstNameController,
                   hintText: 'Nome',
                   obscureText: false,
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 10),*/
 
                 // mail
                 MyTextField(
@@ -156,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 50),
 
-                // o continua con
+                /* o continua con
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -187,7 +189,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
 
                 const SizedBox(height: 50),
-
+                */
+                
                 const SizedBox(height: 50),
 
                 // Non sei registrato? Registrati ora

@@ -4,13 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class SchedaBiograficaScreen extends StatefulWidget {
+  const SchedaBiograficaScreen({super.key});
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<SchedaBiograficaScreen> createState() => _SchedaBiograficaScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
 
   final currentUser = FirebaseAuth.instance.currentUser!;
 
@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: const BackAppBar(
         title: Text(
-          'Profilo',
+          'Scheda biografica',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -79,6 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             return ListView(
               children: [
+                /*
                 const SizedBox(height: 25),
 
                 const Icon(
@@ -102,18 +103,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
 
-                // username
+                username
                 MyTextBox(
                   text: userData['username'], 
                   sectionName: 'Username',
                   onPressed: () => editField('username'),
-                ),
+                ),*/
+
+                const SizedBox(height: 5),
 
                 // Nome
                 MyTextBox(
                   text: userData['nome'], 
                   sectionName: 'Nome',
                   onPressed: () => editField('nome'),
+                ),
+
+                // Data di nascita
+                MyTextBox(
+                  text: userData['dataDiNascita'], 
+                  sectionName: 'Data di nascita',
+                  onPressed: () => editField('dataDiNascita'),
+                ),
+
+                // Mantello
+                MyTextBox(
+                  text: userData['mantello'], 
+                  sectionName: 'Mantello',
+                  onPressed: () => editField('mantello'),
+                ),
+
+                // Razza
+                MyTextBox(
+                  text: userData['razza'], 
+                  sectionName: 'Razza',
+                  onPressed: () => editField('razza'),
                 ),
               ],
             );

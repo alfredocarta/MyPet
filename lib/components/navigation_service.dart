@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app/pages/home_page.dart';
 import 'package:app/pages/login_or_register_page.dart';
-import 'package:app/pages/profile/profile_screen.dart';
+import 'package:app/pages/profile/scheda_biografica/scheda_biografica_screen.dart';
 import 'package:app/pages/profile_page.dart';
 
 class NavigationService {
@@ -22,7 +22,7 @@ class NavigationService {
   static void navigateToCenterPage(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+      MaterialPageRoute(builder: (context) => const SchedaBiograficaScreen()),
     );
   }
 
