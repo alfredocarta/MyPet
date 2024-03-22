@@ -15,10 +15,10 @@ class MyTextBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: Colors.grey[300],
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: const EdgeInsets.only(left: 15, bottom: 15),
+      padding: const EdgeInsets.only(left: 15, bottom: 10),
       margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +30,8 @@ class MyTextBox extends StatelessWidget {
               Text(
                 sectionName,
                 style: TextStyle(
-                  color: Colors.grey[500],
+                  color: Colors.grey[800],
+                  fontSize: 12,
                 ),
               ),
 
@@ -44,7 +45,13 @@ class MyTextBox extends StatelessWidget {
               ),
             ],
           ),
-          Text(text),
+          Text(
+            text,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
         ],
       ),
     );

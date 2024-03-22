@@ -100,7 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 25),
+                //const SizedBox(height: 25),
 
                 // logo
                 const Icon(
@@ -198,7 +198,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 50),
                 */
                 
-                const SizedBox(height: 50),
+                //const SizedBox(height: 50),
 
                 // Non sei registrato? Registrati ora
                 Row(

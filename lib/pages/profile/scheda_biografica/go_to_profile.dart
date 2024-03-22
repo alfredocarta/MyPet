@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-class GoToSchedaBiografica extends StatelessWidget {
-  const GoToSchedaBiografica({
+class GoToProfile extends StatelessWidget {
+  const GoToProfile({
     super.key,
     required this.onPressed,
+    required this.title,
   });
 
   final VoidCallback onPressed;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +25,10 @@ class GoToSchedaBiografica extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 10.0),
                   child: Text(
-                    'Scheda biografica',
+                    title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,

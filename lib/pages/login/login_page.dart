@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 50),
+                //const SizedBox(height: 50),
           
                 // logo
                 const Icon(
@@ -157,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: signIn,
                 ),
           
-                const SizedBox(height: 50),
+                //const SizedBox(height: 50),
                 /*  
                 // o continua con
                 Padding(
