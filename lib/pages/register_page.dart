@@ -1,3 +1,4 @@
+import 'package:app/components/login_app_bar.dart';
 import 'package:app/components/my_button.dart';
 import 'package:app/components/my_textfield.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,12 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
+      appBar: const LoginAppBar(
+        title: Text(
+          'MyPet',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

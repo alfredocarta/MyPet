@@ -1,3 +1,4 @@
+import 'package:app/components/back_app_bar.dart';
 import 'package:app/components/my_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -46,19 +47,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      appBar: AppBar(
-        backgroundColor: Colors.grey[900],
-        title: const Text(
-          "Romeo",
+      backgroundColor: Colors.grey[100],
+      appBar: const BackAppBar(
+        title: Text(
+          'MyPet',
           style: TextStyle(color: Colors.white),
         ),
-        actions: [
-          IconButton(
-            onPressed: (){},
-            icon: const Icon(Icons.logout),
-          ),
-        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -84,12 +78,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           
           MaterialButton(
             onPressed: passwordReset,
+            color: Colors.grey[900],
             child: const Text(
               "Ripristina password", 
               style: TextStyle(
                 color: Colors.white)
               ),
-            color: Colors.grey[900],
           )
         ],
       ),
