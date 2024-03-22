@@ -1,7 +1,7 @@
 import 'package:app/components/login_app_bar.dart';
 import 'package:app/components/my_button.dart';
 import 'package:app/components/my_textfield.dart';
-import 'package:app/pages/forgot_password_page.dart';
+import 'package:app/pages/login/forgot_password_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
