@@ -13,28 +13,29 @@ class ProfilePage extends StatelessWidget {
       backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(top: 30), // Aggiunto padding superiore
+          padding: const EdgeInsets.only(top: 0), // Aggiunto padding superiore
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                const Divider(),
+                const SizedBox(height: 15),
                 const Padding(
-                  padding: EdgeInsets.only(left: 30.0),
+                  padding: EdgeInsets.only(left: 25.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Dati personali",
+                        "Il mio profilo",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 40,
+                          fontSize: 20,
                         ),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 10),
-
                 GoToProfile(
                   onPressed: () {
                     Navigator.push(
@@ -44,7 +45,7 @@ class ProfilePage extends StatelessWidget {
                   }, title: 'Scheda biografica',
                 ),
 
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
 
                 GoToProfile(
                   onPressed: () {
@@ -55,7 +56,7 @@ class ProfilePage extends StatelessWidget {
                   }, title: 'Libretto vaccinale',
                 ),
 
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
 
                 GoToProfile(
                   onPressed: () {

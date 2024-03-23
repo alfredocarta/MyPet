@@ -20,25 +20,26 @@ class NavigationMenu extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[900],
-        title: const Text(
-          "MyPet",
-          style: TextStyle(color: Colors.white),
+        backgroundColor: Colors.grey[100],
+        title: const Row(
+          children: [
+            SizedBox(width: 10),
+            Text(
+              'MyPet',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            onPressed: signUserOut,
-            icon: const Icon(Icons.logout),
-            color: Colors.white,
-          ),
-        ],
       ),
       bottomNavigationBar: Obx(
         () => SizedBox(
-          height: 100, // Puoi regolare questo valore secondo le tue esigenze
+          height: 100, 
           child: BottomNavigationBar(
-            backgroundColor: Colors.grey[900], 
-            selectedItemColor: Colors.white, 
+            backgroundColor: Colors.grey[100], 
+            selectedItemColor: Colors.black, 
             unselectedItemColor: Colors.grey, 
             currentIndex: controller.selectedIndex.value,
             onTap: (index) => controller.selectedIndex.value = index,

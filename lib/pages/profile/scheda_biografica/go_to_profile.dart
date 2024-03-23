@@ -16,29 +16,30 @@ class GoToProfile extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: BorderRadius.circular(12),
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: const Color.fromARGB(255, 167, 165, 165)),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15.0),
+          padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
           child: FractionallySizedBox(
-            widthFactor: 0.85,
+            widthFactor: 0.90,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 10.0),
+                  padding: const EdgeInsets.only(left: 10.0),
                   child: Text(
                     title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                    style: const TextStyle(
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 16,
                       color: Colors.black,
                     ),
                   ),
                 ),
                 IconButton(
                   onPressed: onPressed,
-                  icon: const Icon(Icons.edit),
+                  icon: const Icon(Icons.arrow_right_outlined),
                 ),
               ],
             ),

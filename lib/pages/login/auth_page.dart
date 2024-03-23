@@ -1,4 +1,4 @@
-import 'package:app/components/navigation_menu.dart';
+import 'package:app/components/navigazione/navigation_menu.dart';
 import 'package:app/pages/login/login_or_register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

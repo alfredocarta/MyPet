@@ -1,6 +1,5 @@
 import 'package:app/util/category_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,49 +11,27 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            const Divider(),
+            const SizedBox(height: 15),
+            // barra di ricerca
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [                  
-                  // Nome
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 8),
-                      Text(
-                        'Ciao,',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Text(
-                        'Alfredo',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                        ),
-                      ),
-                    ],
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    border: InputBorder.none,
+                    hintText: 'Come possiamo aiutarti?',
                   ),
-                  // Immagine profilo
-                  Container( 
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-
             const SizedBox(height: 15),
-
             // prenota un appuntamento
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -119,26 +96,9 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 25),
+            
 
-            // barra di ricerca
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    border: InputBorder.none,
-                    hintText: 'Come possiamo aiutarti?',
-                  ),
-                ),
-              ),
-            ),
+            
 
             const SizedBox(height: 25),
 
@@ -160,8 +120,6 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-
-            const SizedBox(height: 25),
           ],
         ),
       ),

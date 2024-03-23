@@ -1,4 +1,4 @@
-import 'package:app/components/back_app_bar.dart';
+import 'package:app/components/appbar/back_app_bar.dart';
 import 'package:app/components/text_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -65,9 +65,13 @@ class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(
-        title: Text(
-          'Scheda biografica',
-          style: TextStyle(color: Colors.white),
+        title: Row(
+          children: [
+            Text(
+              'MyPet',
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
       backgroundColor: Colors.grey[100],
@@ -79,39 +83,24 @@ class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
 
             return ListView(
               children: [
-                /*
-                const SizedBox(height: 25),
-
-                const Icon(
-                  Icons.person,
-                  size: 72,
-                ),
-
-                Text(
-                  currentUser.email!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey[700]),
-                ),
-
-                const SizedBox(height: 20),
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Text(
-                    'Scheda biografica',
-                    style: TextStyle(color: Colors.grey[600]),
+                const Divider(),
+                const SizedBox(height: 15),
+                const Padding(
+                  padding: EdgeInsets.only(left: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Scheda biografica",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-
-                username
-                MyTextBox(
-                  text: userData['username'], 
-                  sectionName: 'Username',
-                  onPressed: () => editField('username'),
-                ),*/
-
-                const SizedBox(height: 5),
-
+                
                 // Nome
                 MyTextBox(
                   text: userData['nome'], 

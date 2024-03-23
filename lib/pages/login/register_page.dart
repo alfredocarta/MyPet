@@ -1,4 +1,4 @@
-import 'package:app/components/login_app_bar.dart';
+import 'package:app/components/appbar/login_app_bar.dart';
 import 'package:app/components/my_button.dart';
 import 'package:app/components/my_textfield.dart';
 import 'package:flutter/material.dart';
@@ -89,141 +89,146 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: const LoginAppBar(
-        title: Text(
-          'MyPet',
-          style: TextStyle(color: Colors.white),
+        title: Row(
+          children: [
+            SizedBox(width: 10),
+            Text(
+              'MyPet',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //const SizedBox(height: 25),
-
-                // logo
-                const Icon(
-                  Icons.lock,
-                  size: 50,
-                ),
-
-                const SizedBox(height: 50),
-
-                // Messaggio di benvenuto
-                Text(
-                  'Crea un account',
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 16,
-                  ),
-                ),
-
-                const SizedBox(height: 25),
-
-                /* Nome
-                MyTextField(
-                  controller: firstNameController,
-                  hintText: 'Nome',
-                  obscureText: false,
-                ),
-
-                const SizedBox(height: 10),*/
-
-                // mail
-                MyTextField(
-                  controller: emailController,
-                  hintText: 'Email',
-                  obscureText: false,
-                ),
-
-                const SizedBox(height: 10),
-
-                // password
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-
-                const SizedBox(height: 10),
-
-                // confirm password
-                MyTextField(
-                  controller: confirmPasswordController,
-                  hintText: 'Conferma la password',
-                  obscureText: true,
-                ),
-
-                const SizedBox(height: 25),
-
-                // sign in
-                MyButton(
-                  text: "Iscriviti",
-                  onTap: signUp,
-                ),
-
-                const SizedBox(height: 50),
-
-                /* o continua con
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          'O continua con',
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                      ),
-
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 50),
-                */
-                
-                //const SizedBox(height: 50),
-
-                // Non sei registrato? Registrati ora
-                Row(
+        child: Column(
+          children: [
+            Center(
+              child: SingleChildScrollView(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const Divider(),
+                    const SizedBox(height: 25),
+            
+                    // Messaggio di benvenuto
                     Text(
-                      'Sei già registrato?',
-                      style: TextStyle(color: Colors.grey[700]),
-                    ),
-                    const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: widget.showLoginPage,
-                      child: const Text(
-                        'Accedi',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      'Crea un account',
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 16,
                       ),
+                    ),
+            
+                    const SizedBox(height: 25),
+            
+                    /* Nome
+                    MyTextField(
+                      controller: firstNameController,
+                      hintText: 'Nome',
+                      obscureText: false,
+                    ),
+            
+                    const SizedBox(height: 10),*/
+            
+                    // mail
+                    MyTextField(
+                      controller: emailController,
+                      hintText: 'Email',
+                      obscureText: false,
+                    ),
+            
+                    const SizedBox(height: 10),
+            
+                    // password
+                    MyTextField(
+                      controller: passwordController,
+                      hintText: 'Password',
+                      obscureText: true,
+                    ),
+            
+                    const SizedBox(height: 10),
+            
+                    // confirm password
+                    MyTextField(
+                      controller: confirmPasswordController,
+                      hintText: 'Conferma la password',
+                      obscureText: true,
+                    ),
+            
+                    const SizedBox(height: 25),
+            
+                    // sign in
+                    MyButton(
+                      text: "Iscriviti",
+                      onTap: signUp,
+                    ),
+            
+                    const SizedBox(height: 20),
+            
+                    /* o continua con
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.5,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+            
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Text(
+                              'O continua con',
+                              style: TextStyle(color: Colors.grey[700]),
+                            ),
+                          ),
+            
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.5,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+            
+                    const SizedBox(height: 50),
+                    */
+                    
+                    //const SizedBox(height: 50),
+            
+                    // Non sei registrato? Registrati ora
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Sei già registrato?',
+                          style: TextStyle(color: Colors.grey[700]),
+                        ),
+                        const SizedBox(width: 4),
+                        GestureDetector(
+                          onTap: widget.showLoginPage,
+                          child: const Text(
+                            'Accedi',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

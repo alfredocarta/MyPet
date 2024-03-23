@@ -1,4 +1,4 @@
-import 'package:app/components/back_app_bar.dart';
+import 'package:app/components/appbar/back_app_bar.dart';
 import 'package:app/components/my_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -49,15 +49,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: const BackAppBar(
-        title: Text(
-          'MyPet',
-          style: TextStyle(color: Colors.white),
+        title: Row(
+          children: [
+            SizedBox(width: 0),
+            Text(
+              'MyPet',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-
+          const Divider(),
+          const SizedBox(height: 25),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
