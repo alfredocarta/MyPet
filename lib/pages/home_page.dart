@@ -1,4 +1,5 @@
-import 'package:app/util/category_card.dart';
+import 'package:app/components/phone_button.dart';
+import 'package:app/pages/chat_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,113 +14,72 @@ class HomePage extends StatelessWidget {
           children: [
             const Divider(),
             const SizedBox(height: 15),
-            // barra di ricerca
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    border: InputBorder.none,
-                    hintText: 'Come possiamo aiutarti?',
-                  ),
-                ),
-              ),
+            
+            const PhoneNumberButton(
+              phoneNumber: '3348343186',
             ),
+
             const SizedBox(height: 15),
-            // prenota un appuntamento
-            Padding(
+
+            Container(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(children: [
-                  Container(
-                    height: 100,
-                    width: 100,
-                    color: Colors.grey[200],
-                  ),
-
-                  const SizedBox(width: 25),
-
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Non si sente bene?', 
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-
-                        const SizedBox(height: 12),
-                        
-                        const Text(
-                          'Compila la sua scheda biografica',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-
-                        const SizedBox(height: 12),
-                        
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[700],
-                            borderRadius: BorderRadius.circular(12)
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Inizia',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+              child: ElevatedButton(
+                onPressed: () {
+                  // Naviga alla pagina Peso
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ChatPage()),
+                  );
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black), 
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
+                  minimumSize: MaterialStateProperty.all<Size>(
+                    const Size(double.infinity, 60), // Altezza del bottone
+                  ),
+                  side: MaterialStateProperty.all<BorderSide>(
+                    const BorderSide(color: Colors.grey, width: 0.5), // Definisci il bordo nero
+                  ),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '5 Kg',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
 
-            
+          const SizedBox(height: 15),
 
-            
-
-            const SizedBox(height: 25),
-
-            SizedBox(
-              height: 100,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  CategoryCard(
-                    categoryName: 'Cardiologo',
-                    // imagePath: 'lib/icons/tooth.png',
-                  ),
-                  CategoryCard(
-                    categoryName: 'Chirurgo',
-                  ),
-                  CategoryCard(
-                    categoryName: 'Dentista',
-                  ),
-                ],
+          // barra di ricerca
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const TextField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                  hintText: 'Come possiamo aiutarti?',
+                ),
               ),
             ),
+          ),
           ],
         ),
       ),
