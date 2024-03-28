@@ -1,5 +1,5 @@
 import 'package:app/pages/home_page.dart';
-import 'package:app/pages/profile_page.dart';
+import 'package:app/pages/profile/scheda_biografica/scheda_biografica_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -65,7 +65,7 @@ class NavigationController extends GetxController {
 
   final List<Widget> screens = [
     const HomePage(), 
-    const ProfilePage(), 
+    const SchedaBiograficaScreen(), 
   ];
 
   void changeIndex(int index) {

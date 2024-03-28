@@ -1,3 +1,4 @@
+import 'package:app/components/home_button.dart';
 import 'package:app/components/phone_button.dart';
 import 'package:app/pages/chat_page.dart';
 import 'package:flutter/material.dart';
@@ -14,72 +15,85 @@ class HomePage extends StatelessWidget {
           children: [
             const Divider(),
             const SizedBox(height: 15),
+            const Padding(
+              padding: EdgeInsets.only(left: 25.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Home Page",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             
             const PhoneNumberButton(
               phoneNumber: '3348343186',
             ),
 
-            const SizedBox(height: 15),
-
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Naviga alla pagina Peso
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ChatPage()),
-                  );
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black), 
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  minimumSize: MaterialStateProperty.all<Size>(
-                    const Size(double.infinity, 60), // Altezza del bottone
-                  ),
-                  side: MaterialStateProperty.all<BorderSide>(
-                    const BorderSide(color: Colors.grey, width: 0.5), // Definisci il bordo nero
-                  ),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '5 Kg',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            HomeButton(
+              sectionName: 'Peso',
+              text: '5Kg', 
+              icon: Icons.monitor_weight,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatPage()),
+                );
+              }, 
             ),
 
-          const SizedBox(height: 15),
-
-          // barra di ricerca
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  border: InputBorder.none,
-                  hintText: 'Come possiamo aiutarti?',
-                ),
-              ),
+            HomeButton(
+              sectionName: 'Dieta',
+              text: '...', 
+              icon: Icons.food_bank,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatPage()),
+                );
+              }, 
             ),
-          ),
+
+            HomeButton(
+              sectionName: 'Appuntamenti',
+              text: '...', 
+              icon: Icons.calendar_month,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatPage()),
+                );
+              }, 
+            ),
+
+            HomeButton(
+              sectionName: 'Eventi',
+              text: '...', 
+              icon: Icons.event,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatPage()),
+                );
+              }, 
+            ),
+
+            HomeButton(
+              sectionName: 'Ricetta',
+              text: '...', 
+              icon: Icons.restaurant_menu,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatPage()),
+                );
+              }, 
+            ),
           ],
         ),
       ),

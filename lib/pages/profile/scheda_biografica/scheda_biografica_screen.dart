@@ -64,16 +64,6 @@ class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BackAppBar(
-        title: Row(
-          children: [
-            Text(
-              'MyPet',
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
       backgroundColor: Colors.grey[100],
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
