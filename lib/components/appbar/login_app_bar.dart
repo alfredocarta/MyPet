@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LoginAppBar({
-    Key? key,
+    super.key,
     this.title,
     this.actions,
     this.loadingIcon,
     this.loadingOnPressed,
     this.showBackArrow = true,
-  }) : super(key: key);
+  });
 
   final Widget? title;
   final bool showBackArrow;

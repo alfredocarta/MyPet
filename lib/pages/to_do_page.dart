@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ToDo extends StatefulWidget {
-  const ToDo({Key? key}) : super(key: key);
+  const ToDo({super.key});
 
   @override
   State<ToDo> createState() => _ToDoState();
@@ -86,13 +86,13 @@ class _ToDoState extends State<ToDo> {
                       // update button
                       IconButton(
                       onPressed: () => openNoteBox(docID: docID),
-                      icon: Icon(Icons.settings),
+                      icon: const Icon(Icons.settings),
                       ),
 
                       // delete button
                       IconButton(
                       onPressed: () => firestoreService.deleteNote(docID),
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                       ),
                     ],
                   ),

@@ -53,7 +53,7 @@ class NavigationMenu extends StatelessWidget {
       body: Obx(
         () => IndexedStack(
           index: controller.selectedIndex.value,
-          children: controller.screens, // Utilizza gli schermi dal controller di navigazione
+          children: controller.screens, 
         ),
       ),
     );

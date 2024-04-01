@@ -1,4 +1,3 @@
-import 'package:app/components/appbar/back_app_bar.dart';
 import 'package:app/components/text_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +73,7 @@ class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
             return ListView(
               children: [
                 const Divider(),
-                const SizedBox(height: 15),
+                const SizedBox(height: 5),
                 const Padding(
                   padding: EdgeInsets.only(left: 25.0),
                   child: Row(

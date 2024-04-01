@@ -1,7 +1,7 @@
 import 'package:app/components/home_button.dart';
 import 'package:app/components/phone_button.dart';
 import 'package:app/pages/chat_page.dart';
-import 'package:app/pages/weight.dart';
+import 'package:app/pages/weight/weight_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             const Divider(),
-            const SizedBox(height: 15),
+            const SizedBox(height: 5),
             const Padding(
               padding: EdgeInsets.only(left: 25.0),
               child: Row(
@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const WeightTrackerPage(date: null, weight: null)),
+                  MaterialPageRoute(builder: (context) =>  const MyWeight(weight: '5',)),
                 );
               }, 
             ),
@@ -87,7 +87,7 @@ class HomePage extends StatelessWidget {
             HomeButton(
               sectionName: 'Ricetta',
               text: '...', 
-              icon: Icons.restaurant_menu,
+              icon: Icons.medical_information,
               onPressed: () {
                 Navigator.push(
                   context,

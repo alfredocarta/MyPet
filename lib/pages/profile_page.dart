@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Divider(),
-                const SizedBox(height: 15),
+                const SizedBox(height: 5),
                 const Padding(
                   padding: EdgeInsets.only(left: 25.0),
                   child: Row(
@@ -35,7 +35,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 0),
                 GoToProfile(
                   onPressed: () {
                     Navigator.push(
