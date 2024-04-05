@@ -1,5 +1,5 @@
-import 'package:app/components/home_button.dart';
-import 'package:app/components/phone_button.dart';
+import 'package:app/components/button/home_button.dart';
+import 'package:app/components/button/phone_button.dart';
 import 'package:app/pages/chat_page.dart';
 import 'package:app/pages/weight/weight_page.dart';
 import 'package:flutter/material.dart';
@@ -14,23 +14,7 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const Divider(),
-            const SizedBox(height: 5),
-            const Padding(
-              padding: EdgeInsets.only(left: 25.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Home Page",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const Divider(),            
             
             const PhoneNumberButton(
               phoneNumber: '3348343186',
@@ -43,7 +27,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  const MyWeight(weight: '5',)),
+                  MaterialPageRoute(builder: (context) =>   const MyWeight(currentWeight: '')),
                 );
               }, 
             ),

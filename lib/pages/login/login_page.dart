@@ -1,5 +1,5 @@
 import 'package:app/components/appbar/login_app_bar.dart';
-import 'package:app/components/my_button.dart';
+import 'package:app/components/button/my_button.dart';
 import 'package:app/components/my_textfield.dart';
 import 'package:app/pages/login/forgot_password_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';

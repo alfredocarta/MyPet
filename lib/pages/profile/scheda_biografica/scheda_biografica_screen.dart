@@ -1,4 +1,4 @@
-import 'package:app/components/text_box.dart';
+import 'package:app/components/text_box/text_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +12,6 @@ class SchedaBiograficaScreen extends StatefulWidget {
 class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
 
   final currentUser = FirebaseAuth.instance.currentUser!;
-
   final userCollection = FirebaseFirestore.instance.collection("Users"); 
 
   Future<void> editField(String field) async {
@@ -73,23 +72,7 @@ class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
             return ListView(
               children: [
                 const Divider(),
-                const SizedBox(height: 5),
-                const Padding(
-                  padding: EdgeInsets.only(left: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Scheda biografica",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                
+                                
                 // Nome
                 MyTextBox(
                   text: userData['nome'], 

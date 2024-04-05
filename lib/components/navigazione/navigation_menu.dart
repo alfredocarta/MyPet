@@ -9,7 +9,6 @@ class NavigationMenu extends StatelessWidget {
 
   final user = FirebaseAuth.instance.currentUser!;
 
-  // Metodo per effettuare il logout dell'utente
   void signUserOut() {
     FirebaseAuth.instance.signOut();
   }
@@ -33,6 +32,16 @@ class NavigationMenu extends StatelessWidget {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout,
+              color: Colors.grey[500],
+            ),
+            onPressed: signUserOut,
+          ),
+          const SizedBox(width: 10),
+        ],
       ),
       bottomNavigationBar: Obx(
         () => SizedBox(

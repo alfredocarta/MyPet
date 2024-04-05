@@ -1,5 +1,5 @@
 import 'package:app/components/appbar/login_app_bar.dart';
-import 'package:app/components/my_button.dart';
+import 'package:app/components/button/my_button.dart';
 import 'package:app/components/my_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

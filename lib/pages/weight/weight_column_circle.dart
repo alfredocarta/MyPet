@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class WeightColumnCircle extends StatelessWidget {
-  final String weight;
+  final String currentWeight;
   final String label;
 
   const WeightColumnCircle({
     super.key,
-    required this.weight,
-    required this.label,
+    required this.label, 
+    required this.currentWeight, 
   });
 
   @override
@@ -26,7 +26,7 @@ class WeightColumnCircle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '$weight Kg',
+            '$currentWeight Kg',
             style: const TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
@@ -35,7 +35,10 @@ class WeightColumnCircle extends StatelessWidget {
           ),
           Text(
             label,
-            style: const TextStyle(fontSize: 10.0, color: Colors.white,),
+            style: const TextStyle(
+              fontSize: 10.0, 
+              color: Colors.white,
+            ),
           ),
         ],
       ),
