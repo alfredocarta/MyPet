@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/pages/home_page.dart';
+import 'package:app/pages/home/home_page.dart';
 import 'package:app/pages/login/login_or_register_page.dart';
 import 'package:app/pages/profile/scheda_biografica/scheda_biografica_screen.dart';
 

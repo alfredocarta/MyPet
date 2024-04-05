@@ -1,7 +1,8 @@
 import 'package:app/components/button/home_button.dart';
 import 'package:app/components/button/phone_button.dart';
 import 'package:app/pages/chat_page.dart';
-import 'package:app/pages/weight/weight_page.dart';
+import 'package:app/pages/home/food/food.dart';
+import 'package:app/pages/home/weight/weight_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -39,7 +40,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatPage()),
+                  MaterialPageRoute(builder: (context) => const MyFood()),
                 );
               }, 
             ),
