@@ -9,9 +9,9 @@ class MyWeight extends StatefulWidget {
   final String currentWeight;
 
   const MyWeight({
-    Key? key,
+    super.key,
     required this.currentWeight,
-  }) : super(key: key);
+  });
 
   @override
   State<MyWeight> createState() => _MyWeightState();

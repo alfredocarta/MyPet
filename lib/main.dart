@@ -1,3 +1,4 @@
+import 'package:app/api/firebase_api.dart';
 import 'package:app/firebase_options.dart';
 import 'package:app/pages/login/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,9 +8,10 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  name: 'MyPet',
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    name: 'MyPet',
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseApi().initNotifications();
   runApp(const MyApp());
 }
 

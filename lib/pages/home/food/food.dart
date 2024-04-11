@@ -1,3 +1,4 @@
+import 'package:app/components/appbar/back_app_bar.dart';
 import 'package:app/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class MyFood extends StatefulWidget {
 }
 
 class _MyFoodState extends State<MyFood> {
+
   // firestore
   final FirestoreService firestoreService = FirestoreService();
 
@@ -21,6 +23,7 @@ class _MyFoodState extends State<MyFood> {
     showDialog(
       context: context, 
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.grey[100],
         content: TextField(
           controller: textController,
         ),
@@ -28,6 +31,7 @@ class _MyFoodState extends State<MyFood> {
           // button to save
           ElevatedButton(
             onPressed: () {
+
               // add a new note
               if ( docID == null ) {
                 firestoreService.addNote(textController.text);
@@ -43,8 +47,16 @@ class _MyFoodState extends State<MyFood> {
 
               // close the box
               Navigator.pop(context);
-            }, 
-            child: const Text("Add"),
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+            ), 
+            child: const Text(
+              "Aggiungi",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       )
@@ -54,9 +66,20 @@ class _MyFoodState extends State<MyFood> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
+      appBar: const BackAppBar(
+        title: Text(
+          'MyPet',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: openNoteBox,
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.grey[900],
+        child: const Icon(Icons.add, color: Colors.white,),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestoreService.getNotesStream(),
