@@ -1,9 +1,8 @@
 import 'package:app/components/button/home_button.dart';
 import 'package:app/components/button/phone_button.dart';
-import 'package:app/pages/home/Eventi/eventi.dart';
+import 'package:app/pages/home/Eventi/booking_screen.dart';
 import 'package:app/pages/home/chat_page.dart';
 import 'package:app/pages/home/food/food.dart';
-import 'package:app/pages/home/weight/weight_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,20 +37,7 @@ class _HomePageState extends State<HomePage> {
 
                   Row(
                     children: [
-                      Expanded(
-                        child: HomeButton(
-                          sectionName: 'Peso',
-                          text: userData['peso'], 
-                          icon: Icons.monitor_weight,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) =>   const MyWeight(currentWeight: '')),
-                            );
-                          }, 
-                        ),
-                      ),
-                      
+                    
                       Expanded(
                         child: HomeButton(
                           sectionName: 'Dieta',
@@ -69,25 +55,13 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   HomeButton(
-                    sectionName: 'Appuntamenti',
-                    text: '...', 
-                    icon: Icons.calendar_month,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ChatPage()),
-                      );
-                    }, 
-                  ),
-
-                  HomeButton(
                     sectionName: 'Eventi',
                     text: '...', 
                     icon: Icons.event,
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyEvent()),
+                        MaterialPageRoute(builder: (context) => const BookingScreen()),
                       );
                     }, 
                   ),

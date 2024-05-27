@@ -1,24 +1,31 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '/pages/home/Eventi/booking_service.dart'; 
+import '/pages/home/Eventi/booking_service_helper.dart';
 
 class FirebaseApi {
-
-  // create an instance of Firebase Messagging
   final _firebaseMessaging = FirebaseMessaging.instance;
 
-  // function to inizialize notifications
   Future<void> initNotifications() async {
-
-    // request permission from user (will prompt user)
     await _firebaseMessaging.requestPermission();
-
-    // fetch the FCM token for this device
     final fCMToken = await _firebaseMessaging.getToken();
-
-    // print the token 
     print('Token: $fCMToken');
   }
 
-  // function to handle received messages
+  static Future<void> uploadBooking({
+    required String serviceName,
+    required int serviceDuration,
+    required DateTime bookingStart,
+    required DateTime bookingEnd,
+  }) async {
+    BookingService newBooking = await createBookingService(
+      serviceName: serviceName,
+      serviceDuration: serviceDuration,
+      bookingStart: bookingStart,
+      bookingEnd: bookingEnd,
+    );
 
-  // function to initialize foreground and background settings 
+    await FirebaseFirestore.instance.collection('bookings').add(newBooking.toJson());
+    print('${newBooking.toJson()} has been uploaded to Firestore');
+  }
 }
