@@ -8,7 +8,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart'; // Importa la l
 
 class BookingCalendarDemoApp extends StatefulWidget {
   const BookingCalendarDemoApp({Key? key}) : super(key: key);
-
+  
   @override
   State<BookingCalendarDemoApp> createState() => _BookingCalendarDemoAppState();
 }
@@ -18,6 +18,7 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
   late BookingService mockBookingService;
   final FirestoreService firestoreService = FirestoreService();
   List<DateTimeRange> bookedSlots = [];
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -51,20 +52,48 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
     return Stream.value([]);
   }
 
-  Future<dynamic> uploadBookingMock({required BookingService newBooking}) async {
+  Future<void> uploadBookingMock({required BookingService newBooking}) async {
     try {
       await firestoreService.uploadBookingToFirestore(newBooking);
       setState(() {
-        // Aggiorna lo stato per contrassegnare lo slot come "booked"
-        // Ad esempio, se `newBooking` contiene le informazioni sull'intervallo di tempo della prenotazione,
-        // puoi aggiornare lo stato dell'applicazione per contrassegnare quell'intervallo come "booked".
+        bookedSlots.add(DateTimeRange(start: newBooking.bookingStart, end: newBooking.bookingEnd));
       });
-      print('Booking uploaded successfully.');
+
+      User? user = _auth.currentUser;
+      if (user != null) {
+        String vetEmail = 'od3rfl401@gmail.com'; // Indirizzo e-mail del veterinario
+        String userName = user.displayName ?? 'Utente'; // Nome dell'utente (se disponibile)
+        DateTime bookingDate = newBooking.bookingStart; // Data della prenotazione
+
+        await sendEmailToVet(vetEmail, userName, bookingDate);
+      }
+
+      print('Prenotazione caricata con successo.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Prenotazione completata con successo!'),
+        ),
+      );
     } catch (error) {
-      print('Error uploading booking to Firestore: $error');
+      print('Errore durante il caricamento della prenotazione su Firestore: $error');
     }
   }
 
+  Future<void> sendEmailToVet(String vetEmail, String userName, DateTime bookingDate) async {
+    final Email email = Email(
+      body: 'Ciao,\n\nHai una nuova prenotazione da $userName per il $bookingDate.\n\nCordiali saluti,\nL\'app MyPet',
+      subject: 'Nuova prenotazione',
+      recipients: [vetEmail],
+      isHTML: false,
+    );
+
+    try {
+      await FlutterEmailSender.send(email);
+      print('E-mail inviata con successo al veterinario.');
+    } catch (error) {
+      print('Errore durante l\'invio dell\'e-mail al veterinario: $error');
+    }
+  }
 
   List<DateTimeRange> converted = [];
 
