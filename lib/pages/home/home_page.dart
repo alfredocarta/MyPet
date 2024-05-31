@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage> {
         stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
         builder: (context,snapshot) {
           if ( snapshot.hasData ) {
-            final userData = snapshot.data!.data() as Map<String,dynamic>;
             return SafeArea(
               child: Column(
                 children: [

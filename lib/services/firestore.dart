@@ -5,6 +5,9 @@ class FirestoreService {
   // get collection of notes
   final CollectionReference notes = FirebaseFirestore.instance.collection('notes');
 
+  // get collection of notes
+  final CollectionReference bookings = FirebaseFirestore.instance.collection('bookings');
+
   // CREATE: add a new note
   Future<void> addNote(String note) {
     return notes.add({

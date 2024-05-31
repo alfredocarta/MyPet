@@ -1,38 +1,17 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseApi {
-  final _firebaseMessaging = FirebaseMessaging.instance;
 
-  // Inizializza le notifiche push
-  Future<void> initNotifications() async {
-    try {
-      await _firebaseMessaging.requestPermission();
-      final fCMToken = await _firebaseMessaging.getToken();
-      print('Token: $fCMToken');
-    } catch (error) {
-      print('Errore durante l inizializzazione delle notifiche: $error');
-      // Gestisci l'errore e fornisci feedback all'utente se necessario
-    }
-  }
+  final CollectionReference<SportBooking> bookingsCollection =
+      FirebaseFirestore.instance.collection('bookings').withConverter<SportBooking>(
+            fromFirestore: (snapshot, _) => SportBooking.fromJson(snapshot.data()!),
+            toFirestore: (booking, _) => booking.toJson(),
+          );
 
-  // Ottiene un riferimento alla collezione delle prenotazioni con un determinato ID del luogo
-  CollectionReference<SportBooking> getBookingCollection({required String placeId}) {
-    return FirebaseFirestore.instance
-        .collection('bookings')
-        .doc(placeId)
-        .collection('bookings')
-        .withConverter<SportBooking>(
-          fromFirestore: (snapshots, _) => SportBooking.fromJson(snapshots.data()!),
-          toFirestore: (booking, _) => booking.toJson(),
-        );
-  }
-
-  // Carica una nuova prenotazione su Firestore
   Future<void> uploadBookingFirebase({required String placeId, required SportBooking newBooking}) async {
     try {
-      await getBookingCollection(placeId: placeId).add(newBooking);
+      await bookingsCollection.add(newBooking);
       print('Prenotazione caricata con successo!');
     } catch (error) {
       print('Errore durante il caricamento della prenotazione: $error');
@@ -40,26 +19,25 @@ class FirebaseApi {
     }
   }
 
-  // Ottiene uno stream di prenotazioni da Firestore
   Stream<List<DateTimeRange>> getBookingStreamFirebase({
     required String placeId,
     required DateTime start,
     required DateTime end,
   }) {
     try {
-      return getBookingCollection(placeId: placeId)
+      return bookingsCollection
+          .where('placeId', isEqualTo: placeId)
           .where('bookingStart', isGreaterThanOrEqualTo: start)
           .where('bookingStart', isLessThanOrEqualTo: end)
           .snapshots()
           .map((snapshot) => convertStreamResultFirebase(streamResult: snapshot));
     } catch (error) {
-      print('Errore durante lottenimento dello stream di prenotazioni: $error');
+      print('Errore durante l\'ottenimento dello stream di prenotazioni: $error');
       // Gestisci l'errore e fornisci feedback all'utente se necessario
       return Stream.empty();
     }
   }
 
-  // Converte i risultati dello stream di prenotazioni in una lista di DateTimeRange
   List<DateTimeRange> convertStreamResultFirebase({required QuerySnapshot<SportBooking> streamResult}) {
     List<DateTimeRange> converted = [];
     for (var doc in streamResult.docs) {

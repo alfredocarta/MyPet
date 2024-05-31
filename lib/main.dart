@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:app/pages/login/auth_page.dart'; 
-import 'package:app/api/firebase_api.dart';
 
 
 void main() async {
@@ -18,7 +17,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
