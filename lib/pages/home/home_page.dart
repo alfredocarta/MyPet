@@ -6,7 +6,6 @@ import 'package:app/pages/home/food/food.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -61,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const BookingScreen()),
+                        MaterialPageRoute(builder: (context) => const BookingCalendarDemoApp()),
                       );
                     }, 
                   ),
