@@ -1,10 +1,13 @@
+import 'package:app/services/firestore.dart';
 import 'package:booking_calendar/booking_calendar.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart'; // Importa la libreria per l'invio di e-mail
 
 class BookingCalendarDemoApp extends StatefulWidget {
-  const BookingCalendarDemoApp({super.key});
+  const BookingCalendarDemoApp({Key? key}) : super(key: key);
 
   @override
   State<BookingCalendarDemoApp> createState() => _BookingCalendarDemoAppState();
@@ -13,7 +16,8 @@ class BookingCalendarDemoApp extends StatefulWidget {
 class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
   final now = DateTime.now();
   late BookingService mockBookingService;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirestoreService firestoreService = FirestoreService();
+  List<DateTimeRange> bookedSlots = [];
 
   @override
   void initState() {
@@ -24,6 +28,23 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
       bookingEnd: DateTime(now.year, now.month, now.day, 18, 0),
       bookingStart: DateTime(now.year, now.month, now.day, 8, 0),
     );
+
+    // Recupera le prenotazioni da Firestore quando la pagina si apre
+    retrieveBookingsFromFirestore();
+  }
+
+  Future<void> retrieveBookingsFromFirestore() async {
+    try {
+      List<DateTimeRange> bookings = await firestoreService.fetchBookingsFromFirestore();
+
+      setState(() {
+        bookedSlots = bookings;
+      });
+
+      print('Bookings retrieved from Firestore successfully: $bookedSlots');
+    } catch (error) {
+      print('Error retrieving bookings from Firestore: $error');
+    }
   }
 
   Stream<dynamic>? getBookingStreamMock({required DateTime end, required DateTime start}) {
@@ -31,59 +52,32 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
   }
 
   Future<dynamic> uploadBookingMock({required BookingService newBooking}) async {
-    await Future.delayed(const Duration(seconds: 1));
-    converted.add(DateTimeRange(start: newBooking.bookingStart, end: newBooking.bookingEnd));
-    print('${newBooking.toJson()} has been uploaded');
-
-    // Invia un'e-mail al veterinario
     try {
-      User? user = _auth.currentUser;
-      if (user != null) {
-        String vetEmail = 'alfredocarta01@icloud.com'; // Indirizzo e-mail del veterinario
-        String userName = user.displayName ?? 'Utente'; // Nome dell'utente (se disponibile)
-        DateTime bookingDate = newBooking.bookingStart; // Data della prenotazione
-
-        await sendEmailToVet(vetEmail, userName, bookingDate);
-      }
+      await firestoreService.uploadBookingToFirestore(newBooking);
+      setState(() {
+        // Aggiorna lo stato per contrassegnare lo slot come "booked"
+        // Ad esempio, se `newBooking` contiene le informazioni sull'intervallo di tempo della prenotazione,
+        // puoi aggiornare lo stato dell'applicazione per contrassegnare quell'intervallo come "booked".
+      });
+      print('Booking uploaded successfully.');
     } catch (error) {
-      print('Error sending email to veterinarian: $error');
+      print('Error uploading booking to Firestore: $error');
     }
   }
 
-  Future<void> sendEmailToVet(String vetEmail, String userName, DateTime bookingDate) async {
-    final Email email = Email(
-      body: 'Ciao,\n\nHai una nuova prenotazione da $userName per il $bookingDate.\n\nCordiali saluti,\nL\'app MyPet',
-      subject: 'Nuova prenotazione',
-      recipients: [vetEmail],
-      isHTML: false,
-    );
-
-    try {
-      await FlutterEmailSender.send(email);
-      print('E-mail inviata con successo al veterinario.');
-    } catch (error) {
-      print('Errore durante l\'invio dell\'e-mail al veterinario: $error');
-    }
-  }
 
   List<DateTimeRange> converted = [];
 
   List<DateTimeRange> convertStreamResultMock({required dynamic streamResult}) {
-    DateTime first = now;
-    DateTime tomorrow = now.add(const Duration(days: 1));
-    DateTime second = now.add(const Duration(minutes: 55));
-    DateTime third = now.subtract(const Duration(minutes: 240));
-    DateTime fourth = now.subtract(const Duration(minutes: 500));
-    converted.add(DateTimeRange(start: first, end: now.add(const Duration(minutes: 30))));
-    converted.add(DateTimeRange(start: second, end: second.add(const Duration(minutes: 23))));
-    converted.add(DateTimeRange(start: third, end: third.add(const Duration(minutes: 15))));
-    converted.add(DateTimeRange(start: fourth, end: fourth.add(const Duration(minutes: 50))));
-    converted.add(DateTimeRange(
-      start: DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 5, 0),
-      end: DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 23, 0),
-    ));
-    return converted;
-  }
+  List<DateTimeRange> allSlots = [
+    // Aggiungi qui gli altri slot generati
+  ];
+
+  // Aggiungi gli slot prenotati recuperati da Firestore
+  allSlots.addAll(bookedSlots);
+
+  return allSlots;
+}
 
   List<DateTimeRange> generatePauseSlots() {
     return [
@@ -95,7 +89,7 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Booking Calendar Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(primarySwatch: Colors.grey),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Booking Calendar Demo'),
