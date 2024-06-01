@@ -80,7 +80,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           
           MyTextField(
             controller: _emailController,
-            hintText: 'Username',
+            hintText: 'Email',
             obscureText: false,
           ),
 

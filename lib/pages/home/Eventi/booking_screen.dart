@@ -1,3 +1,4 @@
+import 'package:app/components/appbar/back_app_bar.dart';
 import 'package:app/services/firestore.dart';
 import 'package:booking_calendar/booking_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -52,32 +53,48 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
     return Stream.value([]);
   }
 
-  Future<void> uploadBookingMock({required BookingService newBooking}) async {
+  Future<dynamic> uploadBookingMock({required BookingService newBooking}) async {
     try {
-      await firestoreService.uploadBookingToFirestore(newBooking);
-      setState(() {
-        bookedSlots.add(DateTimeRange(start: newBooking.bookingStart, end: newBooking.bookingEnd));
-      });
-
       User? user = _auth.currentUser;
       if (user != null) {
+        String userEmail = user.email!;
+
+        // Recupera i dati dell'utente da Firestore
+        DocumentSnapshot userData = await FirebaseFirestore.instance.collection('Users').doc(userEmail).get();
+        String userName = userData['username']; // Assumendo che il nome dell'utente sia memorizzato nel campo 'username' nel documento dell'utente
+
+        // Crea un nuovo documento per la prenotazione
+        await FirebaseFirestore.instance.collection('bookings').add({
+          'userEmail': userEmail,
+          'userName': userName,
+          'bookingStart': newBooking.bookingStart,
+          'bookingEnd': newBooking.bookingEnd,
+          // Aggiungi altri dettagli della prenotazione se necessario
+        });
+
+        setState(() {
+          bookedSlots.add(DateTimeRange(start: newBooking.bookingStart, end: newBooking.bookingEnd));
+        });
+
         String vetEmail = 'od3rfl401@gmail.com'; // Indirizzo e-mail del veterinario
-        String userName = user.displayName ?? 'Utente'; // Nome dell'utente (se disponibile)
         DateTime bookingDate = newBooking.bookingStart; // Data della prenotazione
 
         await sendEmailToVet(vetEmail, userName, bookingDate);
-      }
 
-      print('Prenotazione caricata con successo.');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Prenotazione completata con successo!'),
-        ),
-      );
+        print('Booking uploaded successfully.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Prenotazione completata con successo!'),
+          ),
+        );
+      } else {
+        print('User is not logged in.');
+      }
     } catch (error) {
-      print('Errore durante il caricamento della prenotazione su Firestore: $error');
+      print('Error uploading booking to Firestore: $error');
     }
   }
+
 
   Future<void> sendEmailToVet(String vetEmail, String userName, DateTime bookingDate) async {
     final Email email = Email(
@@ -116,12 +133,16 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Booking Calendar Demo',
-      theme: ThemeData(primarySwatch: Colors.grey),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Booking Calendar Demo'),
+    return Scaffold(
+        backgroundColor: Colors.grey[100],
+        appBar: const BackAppBar(
+          title: Text(
+            'MyPet',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         body: Center(
           child: BookingCalendar(
@@ -130,7 +151,7 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
             getBookingStream: getBookingStreamMock,
             uploadBooking: uploadBookingMock,
             pauseSlots: generatePauseSlots(),
-            pauseSlotText: 'LUNCH',
+            pauseSlotText: 'PRANZO',
             hideBreakTime: false,
             loadingWidget: const Text('Fetching data...'),
             uploadingWidget: const CircularProgressIndicator(),
@@ -139,7 +160,6 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
             wholeDayIsBookedWidget: const Text('Sorry, for this day everything is booked'),
           ),
         ),
-      ),
-    );
+      );
   }
 }

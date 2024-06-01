@@ -38,7 +38,7 @@ class PhoneNumberButton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Veterinario',
+                    'Chiama il tuo veterinario',
                     style: TextStyle(
                       color: Colors.grey[800],
                       fontSize: 12,
