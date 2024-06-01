@@ -49,6 +49,7 @@ dependencies:
   mockito: ^5.4.4
   json_annotation: ^4.9.0
   flutter_email_sender: ^6.0.3
+  add_2_calendar: ^3.0.1
 
 
 dev_dependencies:
@@ -78,10 +79,10 @@ flutter:
   assets:
   - assets/icons/
 
-flutter_icons:
+flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/logo.png"
+  image_path: "assets/icons/logo_nuovo.png"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

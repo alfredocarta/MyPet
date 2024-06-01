@@ -22,7 +22,7 @@ class PhoneNumberButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: const Color.fromARGB(255, 167, 165, 165)),
       ),
@@ -45,7 +45,7 @@ class PhoneNumberButton extends StatelessWidget {
                     ),
                   ),
                   const Text(
-                    '3348343186',
+                    '0373 0541106',
                     style: TextStyle(
                       fontStyle: FontStyle.normal,
                       fontSize: 17,
@@ -61,18 +61,6 @@ class PhoneNumberButton extends StatelessWidget {
                 color: Colors.grey[400],
               ),
             ],
-
-          /*mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Icon(Icons.phone),
-            const SizedBox(width: 8),
-            Text(
-              phoneNumber,
-              style: const TextStyle(
-                fontSize: 17,
-              ),
-            ),
-          ],*/
         ),
       ),
     );

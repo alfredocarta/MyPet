@@ -20,7 +20,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       automaticallyImplyLeading: true,
       title: title,
       leading: showBackArrow

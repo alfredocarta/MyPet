@@ -1,5 +1,5 @@
-import 'package:app/pages/home/home_page.dart';
-import 'package:app/pages/profile/scheda_biografica/scheda_biografica_screen.dart';
+import 'package:app/pages/home_page.dart';
+import 'package:app/pages/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +19,7 @@ class NavigationMenu extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[100],
+        backgroundColor: Colors.white,
         title: const Row(
           children: [
             SizedBox(width: 10),
@@ -47,7 +47,7 @@ class NavigationMenu extends StatelessWidget {
         () => SizedBox(
           height: 100, 
           child: BottomNavigationBar(
-            backgroundColor: Colors.grey[100], 
+            backgroundColor: Colors.white, 
             selectedItemColor: Colors.black, 
             unselectedItemColor: Colors.grey, 
             currentIndex: controller.selectedIndex.value,
@@ -74,7 +74,7 @@ class NavigationController extends GetxController {
 
   final List<Widget> screens = [
     const HomePage(), 
-    const SchedaBiograficaScreen(), 
+    const ProfileScreen(), 
   ];
 
   void changeIndex(int index) {

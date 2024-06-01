@@ -1,16 +1,17 @@
-import 'package:app/components/appbar/login_app_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app/components/button/my_button.dart';
 import 'package:app/components/my_textfield.dart';
+import 'package:app/components/appbar/login_app_bar.dart';
 import 'package:app/pages/login/forgot_password_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
   final VoidCallback showRegisterPage;
   
   const LoginPage({
-    super.key,
+    Key? key,
     required this.showRegisterPage, 
     this.onTap,
   });
@@ -72,30 +73,25 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: const LoginAppBar(
-        title: Row(
-          children: [
-            SizedBox(width: 10),
-            Text(
-              'MyPet',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            Center(
-              child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          reverse: true, // Imposta reverse su true
+          child: Column(
+            children: [
+              Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Divider(),
+                    const SizedBox(height: 50), // Spazio sopra il logo
+
+                    Center(
+                      child: Container(
+                        width: 200, // Larghezza del logo
+                        height: 200, // Altezza del logo
+                        child: Image.asset('assets/icons/logo_nuovo.png'), // Immagine del logo
+                      ),
+                    ),
                     const SizedBox(height: 25),
                     
                     // Messaggio di benvenuto
@@ -152,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
               
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 35),
               
                     // sign in
                     MyButton(
@@ -160,60 +156,6 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: signIn,
                     ),
               
-                    //const SizedBox(height: 50),
-                    /*  
-                    // o continua con
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.5,
-                              color: Colors.grey[400],
-                            ),
-                          ),
-                    
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text(
-                              'O continua con',
-                              style: TextStyle(color: Colors.grey[700]),
-                            ),
-                          ),
-                    
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.5,
-                              color: Colors.grey[400],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-              
-                    const SizedBox(height: 50),
-                    
-                    // google + apple sign in button
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // google
-                        SquareTile(
-                          onTap: () => AuthService().signInWithGoogle(),
-                          imagePath: '/Users/alfredocarta/Desktop/learn-flutter/flutter_application_1/lib/images/google.png',
-                        ),
-              
-                        const SizedBox(width: 25),
-              
-                        //apple
-                        SquareTile(
-                          onTap: () {},
-                          imagePath: '/Users/alfredocarta/Desktop/learn-flutter/flutter_application_1/lib/images/apple.png',
-                        ),
-                      ],
-                    ),
-              */
                     const SizedBox(height: 20),
                     
                     // Non sei registrato? Registrati ora
@@ -241,8 +183,8 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -18,7 +18,7 @@ class HomeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: const Color.fromARGB(255, 167, 165, 165)),
       ),

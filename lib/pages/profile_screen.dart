@@ -1,21 +1,25 @@
-import 'package:app/components/text_box/text_box.dart';
+import 'package:app/components/text_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SchedaBiograficaScreen extends StatefulWidget {
-  const SchedaBiograficaScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
   @override
-  State<SchedaBiograficaScreen> createState() => _SchedaBiograficaScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
 
   final currentUser = FirebaseAuth.instance.currentUser!;
   final userCollection = FirebaseFirestore.instance.collection("Users"); 
 
   Future<void> editField(String field) async {
     String newValue = "";
+    String hintText = "Inserisci nuovo $field";
+    if (field == "nomeAnimale") {
+      hintText = "Come si chiama il tuo animale?";
+    }
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -30,8 +34,14 @@ class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
           autofocus: true,
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            hintText: "Inserisci nuovo $field",
+            hintText: hintText,
             hintStyle: const TextStyle(color: Colors.grey),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white), // Linea orizzontale
+            ),
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white), // Linea orizzontale
+            ),
           ),
           onChanged: (value) {
             newValue = value;
@@ -62,7 +72,7 @@ class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
         builder: (context, snapshot) {
@@ -80,26 +90,55 @@ class _SchedaBiograficaScreenState extends State<SchedaBiograficaScreen> {
                   onPressed: () => editField('nome'),
                 ),
 
-                // Data di nascita
+                // Cognome
                 MyTextBox(
-                  text: userData['dataDiNascita'], 
-                  sectionName: 'Data di nascita',
-                  onPressed: () => editField('dataDiNascita'),
+                  text: userData['cognome'], 
+                  sectionName: 'Cognome',
+                  onPressed: () => editField('cognome'),
                 ),
 
-                // Mantello
+                // Nome dell'animale
+                MyTextBox(
+                  text: userData['nomeAnimale'], 
+                  sectionName: 'Come si chiama il tuo animale?',
+                  onPressed: () => editField('nomeAnimale'),
+                ),
+
+                // Data di nascita dell'animale
+                MyTextBox(
+                  text: userData['dataNascita'], 
+                  sectionName: 'Quando è nato il tuo animale?',
+                  onPressed: () => editField('dataNascita'),
+                ),
+
+                // microchip dell'animale
+                MyTextBox(
+                  text: userData['microchip'], 
+                  sectionName: 'Microchip',
+                  onPressed: () => editField('microchip'),
+                ),
+
+                // genere dell'animale
+                MyTextBox(
+                  text: userData['genere'], 
+                  sectionName: 'Genere',
+                  onPressed: () => editField('genere'),
+                ),
+
+                // razza dell'animale
+                MyTextBox(
+                  text: userData['razza'], 
+                  sectionName: 'Razza',
+                  onPressed: () => editField('razza'),
+                ),
+
+                // mantello dell'animale
                 MyTextBox(
                   text: userData['mantello'], 
                   sectionName: 'Mantello',
                   onPressed: () => editField('mantello'),
                 ),
 
-                // Razza
-                MyTextBox(
-                  text: userData['razza'], 
-                  sectionName: 'Razza',
-                  onPressed: () => editField('razza'),
-                ),
               ],
             );
           } else if (snapshot.hasError) {
