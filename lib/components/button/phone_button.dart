@@ -41,14 +41,14 @@ class PhoneNumberButton extends StatelessWidget {
                     'Chiama il tuo veterinario',
                     style: TextStyle(
                       color: Colors.grey[800],
-                      fontSize: 12,
+                      fontSize: 14,
                     ),
                   ),
                   const Text(
                     '0373 0541106',
                     style: TextStyle(
                       fontStyle: FontStyle.normal,
-                      fontSize: 17,
+                      fontSize: 18,
                       color: Colors.black,
                     ),
                   ),

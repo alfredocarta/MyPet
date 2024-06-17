@@ -1,15 +1,15 @@
-import 'package:app/components/appbar/back_app_bar.dart';
-import 'package:app/services/firestore.dart';
-import 'package:booking_calendar/booking_calendar.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:booking_calendar/booking_calendar.dart'; // Assicurati di importare il corretto pacchetto per il calendario
 
 class BookingCalendarDemoApp extends StatefulWidget {
   const BookingCalendarDemoApp({Key? key}) : super(key: key);
-  
+
   @override
   State<BookingCalendarDemoApp> createState() => _BookingCalendarDemoAppState();
 }
@@ -17,7 +17,7 @@ class BookingCalendarDemoApp extends StatefulWidget {
 class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
   final now = DateTime.now();
   late BookingService mockBookingService;
-  final FirestoreService firestoreService = FirestoreService();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   List<DateTimeRange> bookedSlots = [];
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -27,7 +27,7 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
     initializeDateFormatting('it_IT', null).then((_) {
       setState(() {});
     });
-    
+
     mockBookingService = BookingService(
       serviceName: 'Mock Service',
       serviceDuration: 30,
@@ -39,17 +39,39 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
     retrieveBookingsFromFirestore();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    retrieveBookingsFromFirestore();
+  }
+
   Future<void> retrieveBookingsFromFirestore() async {
     try {
-      List<DateTimeRange> bookings = await firestoreService.fetchBookingsFromFirestore();
+      final user = _auth.currentUser;
+      if (user != null) {
+        final userEmail = user.email!;
 
-      setState(() {
-        bookedSlots = bookings;
-      });
+        // Query Firestore per recuperare le prenotazioni dell'utente
+        final querySnapshot = await firestore
+            .collection('bookings')
+            .where('userEmail', isEqualTo: userEmail)
+            .get();
 
-      print('Bookings retrieved from Firestore successfully: $bookedSlots');
+        final List<DateTimeRange> bookings = querySnapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          final DateTime start = (data['bookingStart'] as Timestamp).toDate();
+          final DateTime end = (data['bookingEnd'] as Timestamp).toDate();
+          return DateTimeRange(start: start, end: end);
+        }).toList();
+
+        setState(() {
+          bookedSlots = bookings;
+        });
+
+        print('Prenotazioni recuperate da Firestore con successo: $bookedSlots');
+      }
     } catch (error) {
-      print('Error retrieving bookings from Firestore: $error');
+      print('Errore durante il recupero delle prenotazioni da Firestore: $error');
     }
   }
 
@@ -59,18 +81,16 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
 
   Future<dynamic> uploadBookingMock({required BookingService newBooking}) async {
     try {
-      User? user = _auth.currentUser;
+      final user = _auth.currentUser;
       if (user != null) {
-        String userEmail = user.email!;
+        final userEmail = user.email!;
+        final userData = await firestore.collection('Users').doc(userEmail).get();
+        final userName = userData['username'];
+        final nome = userData['nome'];
+        final cognome = userData['cognome'];
 
-        // Recupera i dati dell'utente da Firestore
-        DocumentSnapshot userData = await FirebaseFirestore.instance.collection('Users').doc(userEmail).get();
-        String userName = userData['username']; 
-        String nome = userData['nome'];
-        String cognome = userData['cognome'];
-
-        // Crea un nuovo documento per la prenotazione
-        await FirebaseFirestore.instance.collection('bookings').add({
+        // Crea un documento per la nuova prenotazione in Firestore
+        await firestore.collection('bookings').add({
           'userEmail': userEmail,
           'userName': userName,
           'nome': nome,
@@ -83,14 +103,14 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
           bookedSlots.add(DateTimeRange(start: newBooking.bookingStart, end: newBooking.bookingEnd));
         });
 
-        String vetEmail = 'veterinario@gmail.com'; // Indirizzo e-mail del veterinario
-        String bookingDate = formatDate(newBooking.bookingStart); // Data della prenotazione
+        final vetEmail = 'cartaalfredo@gmail.com';
+        final bookingDate = DateFormat.yMMMMd('it_IT').format(newBooking.bookingStart);
 
         await sendEmailToVet(vetEmail, nome, cognome, bookingDate);
 
         print('Appuntamento prenotato con successo.');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Appuntamento prenotato con successo!'),
           ),
         );
@@ -98,7 +118,7 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
         print('Utente non registrato.');
       }
     } catch (error) {
-      print('Error uploading booking to Firestore: $error');
+      print('Errore durante l\'upload della prenotazione su Firestore: $error');
     }
   }
 
@@ -122,15 +142,12 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
     }
   }
 
-  List<DateTimeRange> converted = [];
-
   List<DateTimeRange> convertStreamResultMock({required dynamic streamResult}) {
     List<DateTimeRange> allSlots = [
-      // Aggiungi qui gli altri slot generati
+      // Aggiungi altri slot se necessario
     ];
 
-    // Aggiungi gli slot prenotati recuperati da Firestore
-    allSlots.addAll(bookedSlots);
+    allSlots.addAll(bookedSlots); // Aggiungi gli slot prenotati
 
     return allSlots;
   }
@@ -145,13 +162,23 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: const BackAppBar(
+      appBar: AppBar(
         title: Text(
           'MyPet',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
+        ),
+        leading: BackButton(
+          onPressed: () {
+            // Torna indietro alla homepage e passa eventuali dati aggiornati
+            Navigator.popUntil(context, ModalRoute.withName('/'));
+          },
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black,
         ),
       ),
       body: Center(
@@ -161,17 +188,17 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
           getBookingStream: getBookingStreamMock,
           uploadBooking: uploadBookingMock,
           pauseSlots: generatePauseSlots(),
-          pauseSlotText: 'pranzo',
+          pauseSlotText: 'Pranzo',
           hideBreakTime: false,
-          loadingWidget: const Text('Fetching data...'),
+          loadingWidget: const Text('Caricamento dati...'),
           uploadingWidget: const CircularProgressIndicator(),
-          locale: 'it_IT',
+          locale: 'it_IT', // Imposta la localizzazione italiana
           startingDayOfWeek: StartingDayOfWeek.monday,
-          wholeDayIsBookedWidget: const Text('Sorry, for this day everything is booked'),
-          availableSlotText: 'disponibile',
-          selectedSlotText: 'selezionato',
-          bookedSlotText: 'prenotato',
-          bookingButtonText: 'Prenota', // Imposta il testo del pulsante di prenotazione in italiano
+          wholeDayIsBookedWidget: const Text('Spiacenti, tutto è prenotato per questo giorno'),
+          availableSlotText: 'Disponibile',
+          selectedSlotText: 'Selezionato',
+          bookedSlotText: 'Prenotato',
+          bookingButtonText: 'Prenota',
         ),
       ),
     );

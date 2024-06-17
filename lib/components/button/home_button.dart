@@ -36,14 +36,14 @@ class HomeButton extends StatelessWidget {
                   sectionName,
                   style: TextStyle(
                     color: Colors.grey[800],
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 ),
                 Text(
                   text,
                   style: const TextStyle(
                     fontStyle: FontStyle.normal,
-                    fontSize: 17,
+                    fontSize: 18,
                     color: Colors.black,
                   ),
                 ),

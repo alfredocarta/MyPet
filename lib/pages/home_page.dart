@@ -26,6 +26,12 @@ class _HomePageState extends State<HomePage> {
     fetchNextBooking();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    fetchNextBooking();
+  }
+
   Future<void> fetchNextBooking() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -44,6 +50,10 @@ class _HomePageState extends State<HomePage> {
           var nextBookingData = querySnapshot.docs.first.data() as Map<String, dynamic>;
           setState(() {
             nextBooking = (nextBookingData['bookingStart'] as Timestamp).toDate();
+          });
+        } else {
+          setState(() {
+            nextBooking = null;
           });
         }
       }
@@ -76,50 +86,117 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onTap() {
-  if (nextBooking != null) {
-    addAppointmentToCalendar(
-      nextBooking!, // Inizio dell'appuntamento
-      nextBooking!.add(Duration(minutes: 30)), // Fine dell'appuntamento, aggiungi la durata desiderata
-      'Appuntamento dal veterinario', // Titolo dell'evento
-      'Dettagli del tuo appuntamento' // Descrizione dell'evento
-    );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Nessun appuntamento disponibile'),
-      ),
-    );
+    if (nextBooking != null) {
+      addAppointmentToCalendar(
+        nextBooking!, // Inizio dell'appuntamento
+        nextBooking!.add(const Duration(minutes: 30)), // Fine dell'appuntamento, aggiungi la durata desiderata
+        'Appuntamento dal veterinario', // Titolo dell'evento
+        'Dettagli del tuo appuntamento', // Descrizione dell'evento
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Nessun appuntamento disponibile'),
+        ),
+      );
+    }
   }
-}
 
+  Future<void> refreshData() async {
+    await fetchNextBooking();
+    setState(() {}); // Aggiorna lo stato per riflettere i nuovi dati
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SafeArea(
-              child: Column(
-                children: [
-                  const Divider(),
+      body: RefreshIndicator(
+        color: Colors.grey, // Imposta il colore del cerchio di aggiornamento a grigio
+        onRefresh: refreshData,
+        child: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.email).snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      const Divider(),
 
-                  // Aggiungi il promemoria per la prossima prenotazione
-                  nextBooking != null
-                      ? Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: const Color.fromARGB(255, 167, 165, 165)),
-                          ),
-                          padding: const EdgeInsets.only(left: 15, bottom: 18, top: 18, right: 15),
-                          margin: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 0),
-                          child: Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                      // Aggiungi il promemoria per la prossima prenotazione
+                      nextBooking != null
+                          ? Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: const Color.fromARGB(255, 167, 165, 165)),
+                              ),
+                              padding: const EdgeInsets.only(left: 15, bottom: 18, top: 18, right: 15),
+                              margin: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 0),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Il tuo prossimo appuntamento:',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.grey[800]),
+                                          ),
+                                          Text(
+                                            DateFormat.yMMMMd('it_IT').add_Hm().format(nextBooking!),
+                                            textAlign: TextAlign.left,
+                                            style: const TextStyle(
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      const SizedBox(height: 10.0),
+
+                                      GestureDetector(
+                                        onTap: onTap,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              'Aggiungi al Calendario',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ))
+                          : Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: const Color.fromARGB(255, 167, 165, 165)),
+                              ),
+                              padding: const EdgeInsets.only(left: 15, bottom: 12, top: 12, right: 15),
+                              margin: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,128 +204,125 @@ class _HomePageState extends State<HomePage> {
                                       Text(
                                         'Il tuo prossimo appuntamento:',
                                         textAlign: TextAlign.left,
-                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal,color: Colors.grey[800],),
+                                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.grey[800]),
                                       ),
-                                      Text(
-                                        DateFormat.yMMMMd('it_IT').add_Hm().format(nextBooking!),
+                                      const Text(
+                                        'Non ci sono prenotazioni',
                                         textAlign: TextAlign.left,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
+                                          fontSize: 18,
                                           color: Colors.black,
                                         ),
                                       ),
                                     ],
                                   ),
-                              
-                                  const SizedBox(height: 10.0), 
+                                ],
+                              ),
+                            ),
 
-                                  GestureDetector(
-                                    onTap: onTap,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: const Center(
-                                        child: Text(
-                                          'Aggiungi al Calendario',
+                      const SizedBox(height: 5),
+
+                      HomeButton(
+                        sectionName: 'Non hai un appuntamento?',
+                        text: 'Prenotalo subito',
+                        icon: Icons.event,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const BookingCalendarDemoApp()),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 5),
+
+                      const PhoneNumberButton(
+                        phoneNumber: '0373 0541106',
+                      ),
+
+                      const SizedBox(height: 5),
+
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: const Color.fromARGB(255, 167, 165, 165)),
+                        ),
+                        padding: const EdgeInsets.only(left: 15, bottom: 18, top: 18, right: 15),
+                        margin: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 0),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Devi segnarti una cosa da ricordare?',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const MyNotes()),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: const Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Aggiungi una nota',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                           ),
                                         ),
-                                      ),
+                                        const SizedBox(width: 10),
+                                        const Icon(
+                                          Icons.note_add,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
-                          )
-                          )
-                      : Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: const Color.fromARGB(255, 167, 165, 165)),
-                          ),
-                          padding: const EdgeInsets.only(left: 15, bottom: 12, top: 12, right: 15),
-                          margin: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Il tuo prossimo appuntamento:',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal,color: Colors.grey[800],),
-                                  ),
-                                  const Text(
-                                    'Non ci sono prenotazioni',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 21,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-
-                  HomeButton(
-                    sectionName: 'Non hai un appuntamento?',
-                    text: 'Prenotalo subito',
-                    icon: Icons.event,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const BookingCalendarDemoApp()),
-                      );
-                    },
-                  ),
-
-                  const PhoneNumberButton(
-                    phoneNumber: '0373 0541106',
-                  ),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: HomeButton(
-                          sectionName: 'Note',
-                          text: 'Aggiungi una nota',
-                          icon: Icons.note_add,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const MyFood()),
-                            );
-                          },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-
-                ],
-              ),
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child:
+                  Text('Errore ${snapshot.error}'),
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Errore ${snapshot.error}'),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+          },
+        ),
       ),
     );
   }

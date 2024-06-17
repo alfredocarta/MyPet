@@ -3,14 +3,14 @@ import 'package:app/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class MyFood extends StatefulWidget {
-  const MyFood({super.key});
+class MyNotes extends StatefulWidget {
+  const MyNotes({super.key});
 
   @override
-  State<MyFood> createState() => _MyFoodState();
+  State<MyNotes> createState() => _MyNotesState();
 }
 
-class _MyFoodState extends State<MyFood> {
+class _MyNotesState extends State<MyNotes> {
 
   // firestore
   final FirestoreService firestoreService = FirestoreService();
