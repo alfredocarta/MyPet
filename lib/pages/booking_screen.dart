@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:booking_calendar/booking_calendar.dart'; // Assicurati di importare il corretto pacchetto per il calendario
+import 'package:booking_calendar/booking_calendar.dart';
 
 class BookingCalendarDemoApp extends StatefulWidget {
   const BookingCalendarDemoApp({Key? key}) : super(key: key);
@@ -105,8 +105,10 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
 
         final vetEmail = 'cartaalfredo@gmail.com';
         final bookingDate = DateFormat.yMMMMd('it_IT').format(newBooking.bookingStart);
+        final bookingStartTime = DateFormat.Hm('it_IT').format(newBooking.bookingStart);
+        final bookingEndTime = DateFormat.Hm('it_IT').format(newBooking.bookingEnd);
 
-        await sendEmailToVet(vetEmail, nome, cognome, bookingDate);
+        await sendEmailToVet(vetEmail, nome, cognome, bookingDate, bookingStartTime, bookingEndTime);
 
         print('Appuntamento prenotato con successo.');
         ScaffoldMessenger.of(context).showSnackBar(
@@ -122,13 +124,9 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
     }
   }
 
-  String formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
-  }
-
-  Future<void> sendEmailToVet(String vetEmail, String nome, String cognome, String bookingDate) async {
+  Future<void> sendEmailToVet(String vetEmail, String nome, String cognome, String bookingDate, String bookingStartTime, String bookingEndTime) async {
     final Email email = Email(
-      body: 'Ciao,\n\nHai una richiesta di appuntamento da $nome $cognome per il $bookingDate.\n\nCordiali saluti,\nL\'app MyPet',
+      body: 'Ciao,\n\nHai una richiesta di appuntamento da $nome $cognome per il $bookingDate dalle $bookingStartTime alle $bookingEndTime.\n\nCordiali saluti,\nL\'app MyPet',
       subject: 'Nuova prenotazione',
       recipients: [vetEmail],
       isHTML: false,

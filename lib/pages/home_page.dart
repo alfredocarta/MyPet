@@ -260,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Devi segnarti una cosa da ricordare?',
+                                      'Hai bisogno di annotare qualcosa?',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Colors.black),
                                     ),
