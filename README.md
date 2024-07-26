@@ -1,16 +1,9 @@
-# app
+# MyPet
 
-A new Flutter project.
+MyPet is a cross-platform mobile application developed with Flutter, designed to allow veterinary clinics to manage their clients' appointments quickly and easily. The app is compatible with both iOS and Android devices.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Appointment Management: Schedule and manage appointments with clients efficiently.
+- Pet Profiles: Create and manage profiles for each pet.
+- Reminders: Set reminders for visits, vaccinations, and other important activities.
